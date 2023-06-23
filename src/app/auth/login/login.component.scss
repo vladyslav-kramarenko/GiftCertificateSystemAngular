@@ -1,0 +1,49 @@
+@import "src/styles/variables";
+
+$section-padding-top: 0px;
+$section-padding-bottom: 70px;
+$section-padding-horizontal: 70px;
+$section-top-margin: $logo-circle-diameter;
+
+.auth-section {
+  margin-top: $section-top-margin;
+  justify-content: center;
+  align-items: center;
+  padding: $section-padding-top $section-padding-horizontal $section-padding-bottom;
+  background-color: $white-color;
+  position: relative;
+
+  .login-form {
+    input {
+      margin-bottom: 10px;
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    .error-message{
+      width: 100%;
+      display: block;
+    }
+  }
+
+  .login-button {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: none;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .auth-section {
+    width: 50%;
+
+    .shop-logo {
+      top: -$logo-circle-diameter/3;
+      height: $logo-circle-diameter / 1.5;
+      width: $logo-circle-diameter / 1.5;
+      font-size: 25px;
+    }
+  }
+}

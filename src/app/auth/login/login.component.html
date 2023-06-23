@@ -1,0 +1,19 @@
+<div class="login-section auth-section column-section shadow-border">
+  <img class="shop-logo" src="assets/JoyCardLogo.png" alt="Joy Card">
+  <form [formGroup]="loginForm" (ngSubmit)="onFormSubmit()">
+    <div class="login-form">
+      <input type="email" placeholder="Email" formControlName="email">
+      <div *ngIf="loginForm.controls['email'].invalid && (loginForm.controls['email'].dirty || loginForm.controls['email'].touched)">
+        <div class="error-message d-block" *ngIf="loginForm.controls['email'].errors?.['required']">Email is required.</div>
+        <div class="error-message d-block" *ngIf="loginForm.controls['email'].errors?.['email']">Please enter a valid email.</div>
+      </div>
+
+      <input type="password" placeholder="Password" formControlName="password">
+      <div *ngIf="loginForm.controls['password'].invalid && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)">
+        <div class="error-message d-block" *ngIf="loginForm.controls['password'].errors?.['required']">Password is required.</div>
+      </div>
+    </div>
+    <button type="submit" id="login-button" class="login-button ok-button" [disabled]="!loginForm.valid">Login</button>
+  </form>
+  <div *ngIf="serverErrorMessage">{{ serverErrorMessage }}</div>
+</div>
