@@ -18,16 +18,24 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthService) {
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   onFormSubmit() {
     if (this.loginForm.valid) {
-      this.authService.loginUser(this.loginForm.value.email, this.loginForm.value.password).subscribe(res => {
+      this.authService.loginUser(
+        this.loginForm.value.email,
+        this.loginForm.value.password
+      ).subscribe(res => {
         console.log("Logged in successfully");
         this.serverErrorMessage = '';
       }, err => {
         console.error(err);
-        this.serverErrorMessage = err.error.message;
+        if (err.status === 401) {
+          this.serverErrorMessage = 'Unauthorized: Invalid email or password.';
+        } else {
+          this.serverErrorMessage = err.error?.message || 'An unknown error occurred.';
+        }
       });
     }
   }
