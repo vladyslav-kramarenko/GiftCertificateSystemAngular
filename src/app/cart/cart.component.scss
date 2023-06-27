@@ -1,0 +1,22 @@
+@import "src/styles/variables";
+
+.cart-item {
+  margin-bottom: 20px;
+}
+
+.total {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.checkout-button {
+  background-color: $primary-color;
+  text-align: right;
+  margin-top: 20px;
+}
+
+.quantity-input {
+  max-width: 80px;
+  border-radius: 5px;
+  border-width: 1px;
+}
