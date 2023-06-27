@@ -1,125 +1,54 @@
 @import "src/styles/variables";
 
-$margin-right-icon: 15px;
-$shop-logo-height: 30px;
-$menu-horizontal-padding: 20px;
-$search-container-height: 40px;
-
-header {
-  position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px $menu-horizontal-padding;
-  background-color: $primary-color;
-  color: $white-color;
-  box-sizing: border-box;
-
-  .menu-logo, .header-right {
-    display: flex;
-    align-items: center;
-  }
-
-  .menu-logo {
-    a {
-      margin-top: 5px;
-    }
-  }
-
-  .material-symbols-outlined {
-    font-variation-settings: 'FILL' 10,
-    'wght' 800,
-    'GRAD' 0,
-    'opsz' 48
-  }
-
-  .search-container {
-    width: 30%;
-    display: flex;
-    border: 1px solid $gray-color;
-    border-radius: 5px;
-    height: $search-container-height;
-    overflow: hidden; // This makes the child border fit within the parent's border-radius
-
-    input {
-      flex-grow: 3;
-      border: none;
-      padding: 0 5px 5px 5px;
-      outline: none;
-      height: 100%;
-    }
-
-    .combobox-container {
-      position: relative;
-      border-left: 1px solid $gray-color;
-      flex-grow: 1;
-
-      select {
-        border: none;
-        padding: 5px;
-        outline: none;
-        background: $white-color;
-        height: 100%;
-        width: 100%;
-      }
-    }
-
-    input::after {
-      content: "";
-      border-left: 1px solid $gray-color;
-      height: 100%;
-      position: absolute;
-    }
-  }
-
-  .hamburger-icon, .favorites-icon, .cart-icon, {
-    display: flex;
-    align-items: center;
-    font-size: 24px;
-    margin-right: $margin-right-icon;
-    background-color: $primary-color;
-    border-radius: 5px;
-    padding: 2px;
-    border: 1px solid $primary-color;
-
-    span {
-      cursor: pointer;
-    }
-  }
-
-  .hamburger-icon:hover, .favorites-icon:hover, .cart-icon:hover {
-    border: 1px solid $gray-color;
-  }
-
-  .header-logo {
-    height: $shop-logo-height;
-    cursor: pointer;
-  }
-
-  .login-signup {
-    a {
-      color: $white-color;
-      text-decoration: none;
-      margin-left: 5px;
-      border-radius: 5px;
-      border: 1px solid $primary-color;
-      padding: 5px;
-
-      &:first-child {
-        margin-right: 5px;
-      }
-
-    }
-
-    a:hover {
-      border: 1px solid $gray-color;
-    }
+@media (max-width: 600px) {
+  header img {
+    height: 70px;
   }
 }
 
-@media only screen and (max-width: 600px) {
-  .header .shop-logo {
-    height: 70px;
+header {
+  background-color: $primary-color;
+}
+
+.hamburger-icon, .favorites-icon, .cart-icon, {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  margin-right: $margin-right-icon;
+  background-color: $primary-color;
+  border-radius: 5px;
+  padding: 4px;
+  border: 1px solid $primary-color;
+
+  cursor: pointer;
+}
+
+.hamburger-icon:hover, .favorites-icon:hover, .cart-icon:hover {
+  border: 1px solid $gray-color;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 10,
+  'wght' 800,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.login-signup {
+  a {
+    color: $white-color;
+    text-decoration: none;
+    margin-left: 5px;
+    border-radius: 5px;
+    border: 1px solid $primary-color;
+    padding: 5px;
+
+    &:first-child {
+      margin-right: 5px;
+    }
+  }
+
+  a:hover {
+    border: 1px solid $gray-color;
   }
 }
