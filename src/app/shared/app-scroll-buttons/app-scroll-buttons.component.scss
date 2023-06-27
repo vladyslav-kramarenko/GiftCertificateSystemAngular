@@ -1,0 +1,20 @@
+@import "src/styles/variables";
+
+#backToTop, #scrollReturn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  border: none;
+  outline: none;
+  background-color: $primary-color;
+  color: $white-color;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 25px;
+  z-index: 99; /* Make sure it does not overlap other elements */
+}
+
+#backToTop:hover, #scrollReturn:hover {
+  background-color: $red-color;
+}
