@@ -1,5 +1,5 @@
 @import 'styles/variables';
-//@import '../node_modules/bootstrap/scss/bootstrap.scss';
+
 
 body {
   min-height: calc(100vh - #{$height-of-header});
@@ -8,14 +8,6 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-
-button {
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  text-align: center;
 }
 
 body, html {
@@ -28,23 +20,28 @@ a {
   cursor: pointer;
 }
 
-.ok-button {
-  color: $white-color;
-  background-color: $primary-color;
+.btn {
+  font-size: 16px;
+  text-align: center;
   transition: background-color 0.3s ease;
 }
 
-.ok-button:hover {
-  background-color: darken($primary-color, 10%);
+.btn-primary {
+  color: $primary-color;
+  background-color: $primary-color;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
 }
 
-.cancel-button {
+.btn-secondary {
   background-color: $gray-color;
   color: $black-color;
-}
 
-.cancel-button:hover {
-  background-color: darken($gray-color, 10%);
+  &:hover {
+    background-color: darken($gray-color, 10%);
+  }
 }
 
 input {
@@ -77,25 +74,6 @@ textarea {
 
 .icon:hover {
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
-}
-
-#backToTop, #scrollReturn {
-  display: none;
-  position: fixed;
-  bottom: 20px;
-  right: 30px;
-  border: none;
-  outline: none;
-  background-color: $primary-color;
-  color: $white-color;
-  cursor: pointer;
-  padding: 15px;
-  border-radius: 25px;
-  z-index: 99; /* Make sure it does not overlap other elements */
-}
-
-#backToTop:hover, #scrollReturn:hover {
-  background-color: $red-color;
 }
 
 .shop-logo {
