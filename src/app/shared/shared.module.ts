@@ -3,12 +3,14 @@ import {CommonModule} from '@angular/common';
 import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from './footer/footer.component';
 import {RouterLink} from "@angular/router";
+import {AppScrollButtonsComponent} from './app-scroll-buttons/app-scroll-buttons.component';
 
 
 @NgModule({
   declarations: [
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    AppScrollButtonsComponent
   ],
   imports: [
     CommonModule,
@@ -16,7 +18,8 @@ import {RouterLink} from "@angular/router";
   ],
   exports: [
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    AppScrollButtonsComponent
   ]
 })
 export class SharedModule {
