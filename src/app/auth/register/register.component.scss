@@ -4,7 +4,8 @@ $section-padding-top: 0px;
 $section-padding-bottom: 70px;
 $section-padding-horizontal: 70px;
 
-.auth-section {
+.register-section {
+  display: flex;
   margin-top: $logo-circle-diameter;
   justify-content: center;
   align-items: center;
@@ -12,7 +13,10 @@ $section-padding-horizontal: 70px;
   background-color: $white-color;
   position: relative;
 
-  .register-form, .form-column {
+  .register-form {
+    justify-content: center;
+    width: 100%;
+
     input {
       margin-bottom: 10px;
       width: 100%;
@@ -20,29 +24,29 @@ $section-padding-horizontal: 70px;
       border-radius: 5px;
       box-sizing: border-box;
     }
-  }
 
-  .register-form {
-    justify-content: center;
-    width: 100%;
+    .info-section {
+      display: flex;
+      padding: 0;
+    }
 
-    .form-column {
-      padding: 0 15px;
+    .password-section {
+      display: flex;
     }
   }
 
   .buttons {
+    display: flex;
     justify-content: space-between;
     width: 100%;
     margin-top: 10px;
 
-    #signup-button{
+    #signup-button {
       background-color: $primary-color;
     }
 
-    #cancel-button,
-    #signup-button {
-      width: 45%;
+    .btn {
+      min-width: 45%;
       padding: 10px;
       box-sizing: border-box;
       border: none;
@@ -50,26 +54,17 @@ $section-padding-horizontal: 70px;
   }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 768px) {
   .auth-section {
-    width: 50%;
-
     .register-form {
-      flex-direction: column;
-
-      .form-column {
+      .info-section {
         padding: 0;
       }
     }
+  }
 
-    .buttons {
-      flex-direction: column;
-
-      #cancel-button,
-      #signup-button {
-        width: 100%;
-        margin-bottom: 10px;
-      }
-    }
+  .btn {
+    width: 100%;
+    margin-bottom: 10px;
   }
 }
