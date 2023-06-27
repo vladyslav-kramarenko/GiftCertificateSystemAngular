@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {CertificateService} from "./certificate.service";
+import {CertificateService} from "../shared/services/certificate.service";
+import {CartService} from "../shared/services/cart.service";
 import {Router} from '@angular/router';
 import {HttpErrorResponse} from "@angular/common/http";
 
@@ -15,7 +16,8 @@ export class CertificateComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private certificateService: CertificateService,
-    private router: Router
+    private cartService: CartService,
+    private router: Router,
   ) {
   }
 
@@ -42,5 +44,9 @@ export class CertificateComponent implements OnInit {
       // redirect to 404 error page when 'id' parameter is not available
       this.router.navigateByUrl('/error/400/Bad Request');
     }
+  }
+
+  addToCart(): void {
+    this.cartService.addToCart(this.certificate.id);
   }
 }
