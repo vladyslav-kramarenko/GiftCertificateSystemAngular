@@ -5,7 +5,8 @@ $section-padding-bottom: 70px;
 $section-padding-horizontal: 70px;
 $section-top-margin: $logo-circle-diameter;
 
-.auth-section {
+.login-section {
+  display: flex;
   margin-top: $section-top-margin;
   justify-content: center;
   align-items: center;
