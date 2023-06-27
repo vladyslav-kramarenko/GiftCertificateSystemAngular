@@ -39,8 +39,8 @@
     </div>
   </div>
   <div class="buttons row-section">
-    <button id="signup-cancel-button" class="cancel-button">Cancel</button>
-    <button type="submit" id="signup-button" class="signup-button ok-button" [disabled]="!registerForm.valid">Sign Up</button>
+    <button id="cancel-button" class="btn btn-secondary">Cancel</button>
+    <button type="submit" id="signup-button" class="btn btn-primary" [disabled]="!registerForm.valid">Sign Up</button>
   </div>
   </form>
   <div *ngIf="serverErrorMessage">{{ serverErrorMessage }}</div>

@@ -3,10 +3,9 @@
 $section-padding-top: 0px;
 $section-padding-bottom: 70px;
 $section-padding-horizontal: 70px;
-$section-top-margin: $logo-circle-diameter;
 
 .auth-section {
-  margin-top: $section-top-margin;
+  margin-top: $logo-circle-diameter;
   justify-content: center;
   align-items: center;
   padding: $section-padding-top $section-padding-horizontal $section-padding-bottom;
@@ -37,8 +36,12 @@ $section-top-margin: $logo-circle-diameter;
     width: 100%;
     margin-top: 10px;
 
-    .cancel-button,
-    .signup-button {
+    #signup-button{
+      background-color: $primary-color;
+    }
+
+    #cancel-button,
+    #signup-button {
       width: 45%;
       padding: 10px;
       box-sizing: border-box;
@@ -62,8 +65,8 @@ $section-top-margin: $logo-circle-diameter;
     .buttons {
       flex-direction: column;
 
-      .cancel-button,
-      .signup-button {
+      #cancel-button,
+      #signup-button {
         width: 100%;
         margin-bottom: 10px;
       }
