@@ -52,16 +52,6 @@ textarea {
   font-size: 16px;
 }
 
-.column-section {
-  display: flex;
-  flex-direction: column;
-}
-
-.row-section {
-  display: flex;
-  flex-direction: row;
-}
-
 .shadow-border {
   border-radius: 5px;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.75);
@@ -98,4 +88,23 @@ textarea {
     width: $logo-circle-diameter / 1.5;
     font-size: 25px;
   }
+}
+
+.section-header {
+  width: 100%;
+  text-align: center;
+  background-color: $primary-color;
+  color: $white-color;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.main-section{
+  margin-top: 70px;
+  align-items: center;
+  padding: 20px;
+  max-width: 900px;
+
+  border-radius: 5px;
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.75);
 }
