@@ -27,7 +27,8 @@ $section-top-margin: $logo-circle-diameter;
     }
   }
 
-  .login-button {
+  #login-button {
+    background-color: $primary-color;
     width: 100%;
     padding: 10px;
     box-sizing: border-box;

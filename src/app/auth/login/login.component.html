@@ -13,7 +13,7 @@
         <div class="error-message d-block" *ngIf="loginForm.controls['password'].errors?.['required']">Password is required.</div>
       </div>
     </div>
-    <button type="submit" id="login-button" class="login-button ok-button" [disabled]="!loginForm.valid">Login</button>
+    <button type="submit" id="login-button" class="btn btn-primary" [disabled]="!loginForm.valid">Login</button>
   </form>
   <div *ngIf="serverErrorMessage">{{ serverErrorMessage }}</div>
 </div>
