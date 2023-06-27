@@ -1,0 +1,129 @@
+@import "src/styles/variables";
+
+.coupon-info-section {
+  margin-top: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: $white-color;
+  //border-radius: 5px;
+  //box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+  position: relative;
+  max-width: 900px;
+
+  h2 {
+    width: 100%;
+    text-align: center;
+    background-color: $primary-color;
+    color: $white-color;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+
+  .coupon-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+
+    .image-description-wrapper {
+      justify-content: space-between;
+
+      img {
+        max-width: 45%;
+        height: auto;
+      }
+
+      .form-column {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 0 5px;
+
+        label {
+          font-weight: bold;
+          margin-top: 10px;
+        }
+
+        p.description {
+          margin-top: 5px;
+          line-height: 1.6;
+          height: 100%; // Make it same height as image
+          overflow-y: auto;
+          border: 1px solid $gray-color;
+          padding: 10px;
+          border-radius: 5px;
+        }
+      }
+    }
+
+    .tags {
+      //margin-top: 20px;
+
+      h3 {
+        margin-bottom: 10px;
+      }
+
+      .tag-list {
+        border: 1px solid $gray-color;
+        border-radius: 5px;
+        padding: 5px;
+        display: flex;
+        flex-wrap: wrap;
+
+        label {
+          background-color: $primary-color;
+          color: $white-color;
+          padding: 5px 10px;
+          margin: 5px;
+          //margin-right: 5px;
+          //margin-bottom: 5px;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .certificate-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
+    margin-top: 10px;
+
+    #add-to-cart {
+      background-color: $primary-color;
+      box-sizing: border-box;
+    }
+
+    .favorite-icon {
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .coupon-info-section {
+    width: 90%;
+
+    .coupon-form {
+      .image-description-wrapper {
+        flex-direction: column;
+        align-items: center;
+
+        img {
+          max-width: 100%;
+          margin-bottom: 20px;
+        }
+
+        .form-column, .tags {
+          text-align: center;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+<main *ngIf="certificate">
+  <div class="coupon-info-section shadow-border">
+    <h2>{{ certificate.name }}</h2>
+    <div class="coupon-form">
+      <div class="image-description-wrapper row-section">
+        <img [src]="certificate.img ? certificate.img :'assets/coupon.png' " alt="Certificate Image">
+        <div class="form-column">
+          <label>Description</label>
+          <p class="description">{{ certificate.description }}</p>
+        </div>
+      </div>
+      <div class="tags">
+        <h3>Categories</h3>
+        <div class="tag-list">
+          <label *ngFor="let tag of certificate.tags">{{ tag.name }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="certificate-action">
+            <span class="material-symbols-outlined favorite-icon">
+                favorite
+            </span>
+      <span class="valid-info">
+                <label>Valid for</label>
+                <label>{{ certificate.duration }}</label>
+                <label>days</label>
+            </span>
+      <button id="add-to-cart" class="btn btn-primary">add to cart</button>
+    </div>
+  </div>
+</main>
