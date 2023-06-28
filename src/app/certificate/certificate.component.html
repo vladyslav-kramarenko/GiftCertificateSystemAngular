@@ -1,4 +1,4 @@
-<main *ngIf="certificate">
+<main *ngIf="certificate" class="justify-content-center">
   <div class="certificate-info-section main-section flex-column">
     <h2 class="section-header">{{ certificate.name }}</h2>
     <div class="certificate-form">
@@ -18,9 +18,7 @@
     </div>
     <div class="certificate-action flex-column flex-md-row">
       <span class="flex-row action-text">
-        <span class="material-symbols-outlined favorite-icon">
-        favorite
-      </span>
+        <app-favorite-button [itemId]="certificate.id"></app-favorite-button>
         <span class="valid-info flex-row">
         <h5 class="d-inline-block">
           Valid for:

@@ -1,5 +1,7 @@
 @import "src/styles/variables";
-
+main{
+  display: flex;
+}
 .certificate-info-section {
   .certificate-form {
     .image-description-wrapper {
