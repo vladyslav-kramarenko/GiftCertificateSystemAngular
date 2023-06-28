@@ -1,0 +1,19 @@
+@import "src/styles/variables";
+
+.footer {
+  background-color: darken($primary-color, 25%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  flex-shrink: 0;
+}
+
+.footer a {
+  color: #fff;
+}
+
+.footer a:hover {
+  color: #ddd;
+  text-decoration: none;
+}
