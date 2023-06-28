@@ -1,0 +1,85 @@
+.certificate-tile {
+  cursor: pointer;
+  display: flex;
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+  align-items: center;
+  justify-content: space-between;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+  &:hover {
+    /* Scale the tile up slightly when hovered */
+    transform: scale(1.05);
+    /* Add a shadow to create a "lifting" effect */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  img {
+    align-self: center;
+    alignment: center;
+    max-width: 70%;
+  }
+
+  .actions {
+    display: flex;
+    margin-top: auto;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .actions span {
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+
+  .actions span:hover {
+    transform: scale(1.2);
+    color: darkgreen;
+  }
+
+  .actions span:active {
+    transform: scale(0.9);
+  }
+}
+
+.certificate-tile.clicked {
+  transform: scale(0.9);
+}
+
+.certificate-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.certificate-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+@media screen and (max-width: 1200px) {
+  .certificate-container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .certificate-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .certificate-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .certificate-container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+

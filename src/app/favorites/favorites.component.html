@@ -1,0 +1,27 @@
+<div class="favorites certificate-container">
+  <div *ngFor="let certificate of favorites" class="certificate-tile flex-column" (mouseleave)="onTileMouseUp($event)">
+    <img [src]="certificate.img ? certificate.img :'assets/coupon.png' "
+         alt="Certificate Image"
+         (mousedown)="onTileMouseDown($event)"
+         (mouseup)="onTileMouseUp($event)"
+         routerLink="/certificates/{{ certificate.id }}"
+    >
+    <h5 class="certificate-card-header"
+        (mousedown)="onTileMouseDown($event)"
+        (mouseup)="onTileMouseUp($event)"
+        routerLink="/certificates/{{ certificate.id }}"
+    >
+      {{ certificate.name }}
+    </h5>
+    <div class="actions flex-row">
+      <app-favorite-button [itemId]="certificate.id" class="fav-btn"></app-favorite-button>
+      <h5>{{ certificate.price }}$</h5>
+      <span (click)="addToCart(certificate.id)"
+            class="material-symbols-outlined cart-icon icon"
+      >
+        shopping_cart
+      </span>
+    </div>
+  </div>
+  <div *ngIf="loading" class="loading">Loading...</div>
+</div>
