@@ -45,7 +45,10 @@ export class CartComponent implements OnInit {
     if (index !== -1) {
       cart.splice(index, 1);
       localStorage.setItem('cart', JSON.stringify(cart));
-      this.updateCart();
+     const indexInCartArray = this.cart.findIndex(cartItem => cartItem.certificate.id === item.certificate.id);
+      if (indexInCartArray !== -1) {
+        this.cart.splice(indexInCartArray, 1);
+      }
     }
   }
 
@@ -88,8 +91,5 @@ export class CartComponent implements OnInit {
         );
       }
     );
-  }
-
-  addToFavorites(certificate: Certificate): void {
   }
 }
