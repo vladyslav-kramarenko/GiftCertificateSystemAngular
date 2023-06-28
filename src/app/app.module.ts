@@ -18,6 +18,7 @@ import { CertificateComponent } from './certificate/certificate.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { AppComponent } from './app.component';
 import { CartComponent } from './cart/cart.component';
+import { FavoritesComponent } from './favorites/favorites.component';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { CartComponent } from './cart/cart.component';
     CertificatesComponent,
     CertificateComponent,
     ErrorPageComponent,
+    FavoritesComponent,
 
   ],
   imports: [

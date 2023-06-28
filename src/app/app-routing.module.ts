@@ -6,11 +6,13 @@ import {RegisterComponent} from './auth/register/register.component';
 import {CertificateComponent} from "./certificate/certificate.component";
 import {ErrorPageComponent} from "./error-page/error-page.component";
 import {CartComponent} from "./cart/cart.component";
+import {FavoritesComponent} from "./favorites/favorites.component";
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'cart', component: CartComponent},
+  {path: 'favorites', component: FavoritesComponent},
   {path: 'certificates/:id', component: CertificateComponent},
   {path: 'error/:errorCode/:errorMessage', component: ErrorPageComponent},
   {path: '**', redirectTo: '/error/404/Page not found'}
