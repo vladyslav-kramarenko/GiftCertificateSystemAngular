@@ -2,16 +2,32 @@
 
 
 body {
-  min-height: calc(100vh - #{$height-of-header});
+  //min-height: calc(100vh - #{$height-of-header});
   font-family: $font-family-base;
   background-color: $white-color;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  min-height: 100vh;
+}
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
-body, html {
-  height: 100%;
+.main-content {
+  flex: 1 0 auto;
+  min-height: 100vh;
+}
+
+footer {
+  flex-shrink: 0;
+}
+
+body,html {
   margin: 0;
   padding: 0;
 }
