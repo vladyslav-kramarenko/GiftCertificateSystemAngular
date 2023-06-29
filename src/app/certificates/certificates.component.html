@@ -1,0 +1,54 @@
+<main>
+  <div class="category-wrapper">
+    <div id="popular-categories" class="category-section">
+      <div class="category-title">
+        <h3>Popular<br>Categories</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-sort-wrapper">
+    <label for="price-range">Price Range:</label>
+    <input type="text" id="min-price" placeholder="$ Min">
+    <input id="price-range" class="range-slider__range" type="range" value="0" min="0" max="500">
+    <input type="text" id="max-price" placeholder="$ Max">
+
+    <div class="sort-section">
+      <label for="sort-options">Sort By:</label>
+      <select id="sort-options">
+        <option value="date-desc">Date: old to new</option>
+        <option value="date-asc">Date: new to old</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="name-asc">Name: A to Z</option>
+        <option value="name-desc">Name: Z to A</option>
+      </select>
+    </div>
+  </div>
+  <div class="favorites certificate-container">
+    <div *ngFor="let certificate of certificates" class="certificate-tile flex-column">
+      <img [src]="certificate.img ? certificate.img :'assets/coupon.png' "
+           alt="Certificate Image"
+           (mousedown)="onTileMouseDown($event)"
+           (mouseup)="onTileMouseUp($event)"
+           routerLink="/certificates/{{ certificate.id }}"
+      >
+      <h5 class="certificate-card-header"
+          (mousedown)="onTileMouseDown($event)"
+          (mouseup)="onTileMouseUp($event)"
+          routerLink="/certificates/{{ certificate.id }}"
+      >
+        {{ certificate.name }}
+      </h5>
+      <div class="actions flex-row">
+        <app-favorite-button [itemId]="certificate.id" class="fav-btn"></app-favorite-button>
+        <h5>{{ certificate.price }}$</h5>
+        <span (click)="addToCart(certificate.id)"
+              class="material-symbols-outlined cart-icon icon"
+        >
+        shopping_cart
+      </span>
+      </div>
+    </div>
+  </div>
+</main>
