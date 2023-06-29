@@ -2,6 +2,10 @@
 
 .cart-item {
   margin-bottom: 20px;
+
+  &:hover {
+    transform: scale(1.01);
+  }
 }
 
 .total {
@@ -19,4 +23,8 @@
   max-width: 80px;
   border-radius: 5px;
   border-width: 1px;
+}
+
+.card-title, img, .card-body {
+  cursor: pointer;
 }

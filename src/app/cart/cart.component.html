@@ -5,15 +5,21 @@
     <ng-container *ngIf="cart.length; else emptyCart">
       <div class="row">
         <div class="col-12">
-          <div class="card mb-3 cart-item" *ngFor="let item of cart">
+          <div class="card mb-3 cart-item"
+               *ngFor="let item of cart"
+          >
             <div class="row g-0">
               <div class="col-md-2">
-                <img [src]="item.certificate.img ? item.certificate.img :'assets/coupon.png'" alt="Certificate Image"
-                     class="img-fluid rounded-start">
+                <img [src]="item.certificate.img ? item.certificate.img :'assets/coupon.png'"
+                     alt="Certificate Image"
+                     class="img-fluid rounded-start"
+                     routerLink="/certificates/{{ item.certificate.id }}"
+                >
               </div>
               <div class="col-md-7">
-                <div class="card-body">
-                  <h3 class="card-title">{{ item.certificate.name }}</h3>
+                <div class="card-body" routerLink="/certificates/{{ item.certificate.id }}">
+                  <h3 class="card-title">
+                    {{ item.certificate.name }}</h3>
                   <p class="card-text">Valid for: <span class="price">{{ item.certificate.duration }}</span> days</p>
                   <p class="card-text">Price: <span class="price">${{ item.certificate.price }}</span></p>
                 </div>
@@ -27,7 +33,7 @@
                            (change)="changeQuantity(item)" min="1">
                   </div>
                   <div class="d-flex justify-content-between align-items-center">
-                    <app-favorite-button [itemId]="item.certificate.id"></app-favorite-button>
+                    <app-favorite-button [itemId]="item.certificate.id" class="fav-btn"></app-favorite-button>
                     <button class="btn btn-danger" (click)="removeFromCart(item)">Remove</button>
                   </div>
                 </div>
@@ -36,7 +42,9 @@
           </div>
         </div>
         <div class="col-12 text-end">
-          <h3>Total: <span class="total-price">${{ getTotalPrice() }}</span></h3>
+          <h3>Total:
+            <span class="total-price">${{ getTotalPrice() }}</span>
+          </h3>
         </div>
         <div class="col-12 text-end">
           <button class="btn btn-primary">Checkout</button>

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CertificateService} from '../shared/services/certificate.service';
 import {forkJoin} from "rxjs";
-import {Certificate} from '../models/ICertificate';
+import {Certificate} from '../shared/models/ICertificate';
 
 @Component({
   selector: 'app-cart',
