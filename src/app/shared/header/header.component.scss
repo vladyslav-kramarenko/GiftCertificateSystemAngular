@@ -10,6 +10,13 @@ header {
   background-color: $primary-color;
 }
 
+.header-logo {
+  transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
 .hamburger-icon, .favorites-icon, .cart-icon, {
   display: flex;
   align-items: center;
