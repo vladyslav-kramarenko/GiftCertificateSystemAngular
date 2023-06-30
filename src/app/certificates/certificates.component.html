@@ -9,19 +9,22 @@
 
   <div class="filter-sort-wrapper">
     <label for="price-range">Price Range:</label>
-    <input type="text" id="min-price" placeholder="$ Min">
+    <input type="text" id="min-price" placeholder="$ Min" [(ngModel)]="minPrice" (change)="initSearch()">
+
+    <!--    TODO replace with dual slider-->
     <input id="price-range" class="range-slider__range" type="range" value="0" min="0" max="500">
-    <input type="text" id="max-price" placeholder="$ Max">
+
+    <input type="text" id="max-price" placeholder="$ Max" [(ngModel)]="maxPrice" (change)="initSearch()">
 
     <div class="sort-section">
       <label for="sort-options">Sort By:</label>
-      <select id="sort-options">
-        <option value="date-desc">Date: old to new</option>
-        <option value="date-asc">Date: new to old</option>
-        <option value="price-asc">Price: Low to High</option>
-        <option value="price-desc">Price: High to Low</option>
-        <option value="name-asc">Name: A to Z</option>
-        <option value="name-desc">Name: Z to A</option>
+      <select id="sort-options" [(ngModel)]="sortBy" (change)="initSearch()">
+        <option value="create_date,desc">Date: old to new</option>
+        <option value="create_date,asc">Date: new to old</option>
+        <option value="price,asc">Price: Low to High</option>
+        <option value="price,desc">Price: High to Low</option>
+        <option value="name,asc">Name: A to Z</option>
+        <option value="name,desc">Name: Z to A</option>
       </select>
     </div>
   </div>
@@ -49,6 +52,9 @@
         shopping_cart
       </span>
       </div>
+    </div>
+    <div *ngIf="errorMessage" class="error">
+      {{ errorMessage }}
     </div>
   </div>
 </main>

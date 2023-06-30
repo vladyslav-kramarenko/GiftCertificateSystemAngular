@@ -3,7 +3,8 @@ import {CertificateService} from '../shared/services/certificate.service';
 import {CartService} from "../shared/services/cart.service";
 import {Subject, Subscription} from 'rxjs';
 import {throttleTime} from 'rxjs/operators';
-
+import {SearchService} from '../shared/services/SearchService';
+import {Certificate} from "../shared/models/ICertificate";
 
 @Component({
   selector: 'app-certificates',
@@ -16,39 +17,61 @@ export class CertificatesComponent implements OnInit {
   allLoaded = false;
   page = 0;
   size = 10;
+  sortBy: string = 'price,asc';
+  searchTerm: string = '';
+  minPrice: number = 0;
+  maxPrice: number = 0;
+  errorMessage: string = '';
 
   private scrollSubject = new Subject();
   private scrollSubscription?: Subscription;
+  private searchTermSubscription?: Subscription;
 
 
   constructor(
     private certificateService: CertificateService,
-    private cartService: CartService
+    private cartService: CartService,
+    private searchService: SearchService
   ) {
   }
 
   ngOnInit(): void {
-    this.scrollSubscription = this.scrollSubject.pipe(
-      throttleTime(200) // Adjust this value to your needs
-    ).subscribe(() => {
-      this.loadCertificates();
+    this.searchTermSubscription = this.searchService.searchTerm$.subscribe((searchTerm) => {
+      this.searchTerm = searchTerm;
+      this.initSearch();
     });
-    this.loadCertificates();
+
+    this.certificateService.error$.subscribe(errorMessage => {
+      this.errorMessage = errorMessage;
+    });
+
+    this.scrollSubscription = this.scrollSubject.pipe(
+      throttleTime(200)
+    ).subscribe(() => {
+      this.loadMoreResults();
+    });
+    this.loadMoreResults();
   }
 
-  loadCertificates() {
-    if (!this.allLoaded && !this.loading) {
-      this.loading = true;
-      this.certificateService.getCertificates(this.page, this.size).subscribe((certificates) => {
-        if (certificates.length === 0) {
-          this.allLoaded = true;
+  loadMoreResults() {
+    const sortParams = this.sortBy.split(',').map(s => s.trim());
+    console.log('loadMoreResults started');
+    this.loading = true;
+    this.certificateService.searchGiftCertificates(
+      this.searchTerm,
+      this.page,
+      this.size,
+      sortParams,
+      this.minPrice || 0,
+      this.maxPrice || 0)
+      .subscribe((certificates: Certificate[]) => {
+        if (certificates === null || certificates === undefined || certificates.length === 0) {
+          this.errorMessage = "No certificates found";
         } else {
           this.certificates = this.certificates.concat(certificates);
           this.page++;
         }
-        this.loading = false;
       });
-    }
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -57,7 +80,7 @@ export class CertificatesComponent implements OnInit {
     const maxPosition = document.documentElement.scrollHeight - document.documentElement.clientHeight;
 
     if (currentPosition >= maxPosition) {
-      this.scrollSubject.next(true);
+      this.loadMoreResults();
     }
   }
 
@@ -65,21 +88,22 @@ export class CertificatesComponent implements OnInit {
     if (this.scrollSubscription) {
       this.scrollSubscription.unsubscribe();
     }
+    if (this.searchTermSubscription) {
+      this.searchTermSubscription.unsubscribe();
+    }
   }
 
+  initSearch() {
+    // Reset to initial state
+    this.certificates = [];
+    this.page = 0;
+    this.allLoaded = false;
+
+    this.loadMoreResults();
+  }
 
   addToCart(id: number): void {
     this.cartService.addToCart(id);
-  }
-
-  onTileClick(event: Event) {
-    const tileElement = (event.target as Element).closest('.certificate-tile');
-    if (tileElement) {
-      tileElement.classList.add('clicked');
-      setTimeout(() => {
-        tileElement.classList.remove('clicked');
-      }, 200);
-    }
   }
 
   onTileMouseDown(event: Event) {
