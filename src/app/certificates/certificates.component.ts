@@ -48,27 +48,29 @@ export class CertificatesComponent implements OnInit {
     this.scrollSubscription = this.scrollSubject.pipe(
       throttleTime(200)
     ).subscribe(() => {
-      this.loadMoreResults();
+      this.loadMoreResults(10);
     });
-    this.loadMoreResults();
   }
 
-  loadMoreResults() {
+  loadMoreResults(size: number) {
     const sortParams = this.sortBy.split(',').map(s => s.trim());
     console.log('loadMoreResults started');
+    console.log('size = '+size);
     this.loading = true;
     this.certificateService.searchGiftCertificates(
       this.searchTerm,
       this.page,
-      this.size,
+      size || this.size,
       sortParams,
       this.minPrice || 0,
       this.maxPrice || 0)
       .subscribe((certificates: Certificate[]) => {
         if (certificates === null || certificates === undefined || certificates.length === 0) {
+          console.log('No certificates found');
           this.errorMessage = "No certificates found";
         } else {
           this.certificates = this.certificates.concat(certificates);
+          console.log('found '+certificates.length+" certificates");
           this.page++;
         }
       });
@@ -80,7 +82,7 @@ export class CertificatesComponent implements OnInit {
     const maxPosition = document.documentElement.scrollHeight - document.documentElement.clientHeight;
 
     if (currentPosition >= maxPosition) {
-      this.loadMoreResults();
+      this.loadMoreResults(10);
     }
   }
 
@@ -94,12 +96,13 @@ export class CertificatesComponent implements OnInit {
   }
 
   initSearch() {
+    console.log("initSearch()");
     // Reset to initial state
     this.certificates = [];
     this.page = 0;
     this.allLoaded = false;
 
-    this.loadMoreResults();
+    this.loadMoreResults(30);
   }
 
   addToCart(id: number): void {
