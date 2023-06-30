@@ -61,8 +61,8 @@ export class CertificateService {
 
     let params = new HttpParams()
       .set('searchTerm', searchTerm)
-      .set('pageNo', pageNo.toString())
-      .set('pageSize', pageSize.toString())
+      .set('page', pageNo.toString())
+      .set('size', pageSize.toString())
       .set('sort', sortParams.join(','))
       .set('minPrice', minPrice)
       .set('maxPrice', maxPrice);
