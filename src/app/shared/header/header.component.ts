@@ -1,10 +1,36 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {SearchService} from "../services/SearchService";
+import {Subject, Subscription} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
+  private searchTerm = new Subject<string>();
+  private subscriptions: Subscription[] = [];
+
+  constructor(private searchService: SearchService) {
+  }
+
+  ngOnInit(): void {
+    this.subscriptions.push(
+      this.searchTerm.pipe(
+        debounceTime(500),
+        distinctUntilChanged()  // ignore if next search term is same as previous
+      )
+        .subscribe(search => this.searchService.setSearchTerm(search))
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  onSearchTermChange(event: any): void {
+    this.searchTerm.next(event.target.value);
+  }
 
 }
