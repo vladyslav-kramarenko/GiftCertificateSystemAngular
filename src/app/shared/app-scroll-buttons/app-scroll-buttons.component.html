@@ -1,10 +1,12 @@
 <span
+  [class.visible]="backToTopButtonVisible"
   (click)="topFunction()"
   id="backToTop"
   class="material-symbols-outlined icon">
   arrow_upward
 </span>
 <span
+  [class.visible]="scrollReturnButtonVisible"
   (click)="returnScroll()"
   id="scrollReturn"
   class="material-symbols-outlined icon">

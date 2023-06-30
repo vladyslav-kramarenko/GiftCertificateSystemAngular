@@ -1,7 +1,10 @@
 @import "src/styles/variables";
 
 #backToTop, #scrollReturn {
-  display: none;
+  //display: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s, visibility 0.5s;
   position: fixed;
   bottom: 20px;
   right: 30px;
@@ -15,6 +18,11 @@
   z-index: 99; /* Make sure it does not overlap other elements */
 }
 
+#backToTop.visible, #scrollReturn.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
 #backToTop:hover, #scrollReturn:hover {
-  background-color: $red-color;
+  background-color: darken(darkorange,10%);
 }
