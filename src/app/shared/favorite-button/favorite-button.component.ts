@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, SimpleChanges} from '@angular/core';
 import {FavoriteService} from '../services/favorite.service';
 
 @Component({
@@ -14,8 +14,10 @@ export class FavoriteButtonComponent {
 
   }
 
-  ngOnInit() {
-    this.isFavorite = this.favoriteService.isFavorite(this.itemId.toString());
+  ngOnChanges(changes: SimpleChanges) {
+    if ('itemId' in changes && changes['itemId'].currentValue !== changes['itemId'].previousValue) {
+      this.isFavorite = this.favoriteService.isFavorite(this.itemId.toString());
+    }
   }
 
   toggleFavorite(): void {
