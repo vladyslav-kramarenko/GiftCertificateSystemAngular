@@ -3,11 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {MatCardModule} from "@angular/material/card";
-import {MatIconModule} from "@angular/material/icon";
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatInputModule} from "@angular/material/input";
-import {MatButtonModule} from "@angular/material/button";
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 import { AuthModule } from './auth/auth.module';
 import { SharedModule } from './shared/shared.module';
@@ -20,7 +20,6 @@ import { AppComponent } from './app.component';
 import { CartComponent } from './cart/cart.component';
 import { FavoritesComponent } from './favorites/favorites.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +28,6 @@ import { FavoritesComponent } from './favorites/favorites.component';
     CertificateComponent,
     ErrorPageComponent,
     FavoritesComponent,
-
   ],
   imports: [
     BrowserModule,
@@ -45,6 +43,6 @@ import { FavoritesComponent } from './favorites/favorites.component';
     FormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
