@@ -1,7 +1,9 @@
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SearchService} from "../services/SearchService";
+import {AuthService} from '../services/auth.service';
 import {Subject, Subscription} from 'rxjs';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -12,7 +14,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private searchTerm = new Subject<string>();
   private subscriptions: Subscription[] = [];
 
-  constructor(private searchService: SearchService) {
+  constructor(
+    private searchService: SearchService,
+    public authService: AuthService,
+    private router: Router,
+  ) {
   }
 
   ngOnInit(): void {
@@ -33,4 +39,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.searchTerm.next(event.target.value);
   }
 
+  onLogoutClick() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 }

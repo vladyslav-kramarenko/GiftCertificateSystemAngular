@@ -1,7 +1,7 @@
 @import "src/styles/variables";
 
 @media (max-width: 600px) {
-  header img {
+  header {
     height: 70px;
   }
 }
@@ -12,38 +12,30 @@ header {
 
 .header-logo {
   transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+
   &:hover {
     transform: scale(1.2);
   }
-}
-
-.hamburger-icon, .favorites-icon, .cart-icon, {
-  display: flex;
-  align-items: center;
-  font-size: 24px;
-  margin-right: $margin-right-icon;
-  background-color: $primary-color;
-  border-radius: 5px;
-  padding: 4px;
-  border: 1px solid $primary-color;
-
-  cursor: pointer;
-}
-
-.hamburger-icon:hover, .favorites-icon:hover, .cart-icon:hover {
-  border: 1px solid $gray-color;
 }
 
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 10,
   'wght' 800,
   'GRAD' 0,
-  'opsz' 48
+  'opsz' 48;
+  margin-right: $margin-right-icon;
+  background-color: $primary-color;
+  border-radius: 5px;
+  padding: 4px;
+  border: 1px solid $primary-color;
+}
+
+.material-symbols-outlined:hover{
+  border: 1px solid $gray-color;
 }
 
 .login-signup {
-  a {
-    color: $white-color;
+  span {
     text-decoration: none;
     margin-left: 5px;
     border-radius: 5px;
@@ -53,9 +45,5 @@ header {
     &:first-child {
       margin-right: 5px;
     }
-  }
-
-  a:hover {
-    border: 1px solid $gray-color;
   }
 }

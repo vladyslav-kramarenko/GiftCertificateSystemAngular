@@ -26,9 +26,13 @@
                       shopping_cart
                   </span>
       <div class="login-signup">
-        <a class="icon" routerLink="/login">Login</a>
-        <span class="">|</span>
-        <a class="icon" routerLink="/register">Sign Up</a>
+        <span *ngIf="!authService.isLoggedIn()" class="material-symbols-outlined icon" routerLink="/login">
+            login
+        </span>
+        <span *ngIf="authService.isLoggedIn()"
+              (click)="onLogoutClick()" class="icon  logout-icon material-symbols-outlined">
+          logout
+        </span>
       </div>
     </div>
   </div>
