@@ -19,6 +19,7 @@ import { ErrorPageComponent } from './error-page/error-page.component';
 import { AppComponent } from './app.component';
 import { CartComponent } from './cart/cart.component';
 import { FavoritesComponent } from './favorites/favorites.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { FavoritesComponent } from './favorites/favorites.component';
     CertificateComponent,
     ErrorPageComponent,
     FavoritesComponent,
+    CheckoutComponent,
   ],
   imports: [
     BrowserModule,

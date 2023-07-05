@@ -8,11 +8,13 @@ import { ErrorPageComponent } from './error-page/error-page.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { CertificateComponent } from './certificate/certificate.component';
 import { CertificatesComponent } from './certificates/certificates.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 const routes: Routes = [
   { path: 'cart', component: CartComponent },
   { path: 'login', component: LoginComponent },
   { path: 'home', component: CertificatesComponent },
+  { path: 'checkout', component: CheckoutComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'favorites', component: FavoritesComponent },
   { path: 'certificates/:id', component: CertificateComponent },
