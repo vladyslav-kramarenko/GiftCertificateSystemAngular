@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../auth.service';
+import {AuthService} from '../../shared/services/auth.service';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {PreviousRouteService} from "../../shared/services/previous-route.service";
 
 @Component({
   selector: 'app-login',
@@ -15,7 +17,11 @@ export class LoginComponent implements OnInit {
 
   serverErrorMessage: string = '';
 
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private previousRouteService: PreviousRouteService,
+  ) {
   }
 
   ngOnInit() {
@@ -28,7 +34,13 @@ export class LoginComponent implements OnInit {
         this.loginForm.value.password
       ).subscribe(res => {
         console.log("Logged in successfully");
+        const previousUrl = this.previousRouteService.getPreviousUrl();
         this.serverErrorMessage = '';
+        if (!previousUrl) {
+          this.router.navigate(['/home']);
+        } else {
+          this.router.navigate([previousUrl]);
+        }
       }, err => {
         console.error(err);
         if (err.status === 401) {

@@ -22,7 +22,8 @@ $section-top-margin: $logo-circle-diameter;
       border-radius: 5px;
       box-sizing: border-box;
     }
-    .error-message{
+
+    .error-message {
       width: 100%;
       display: block;
     }
@@ -37,6 +38,10 @@ $section-top-margin: $logo-circle-diameter;
   }
 }
 
+.register-cta {
+  margin-top: 10px;
+}
+
 @media only screen and (max-width: 600px) {
   .auth-section {
     width: 50%;
@@ -49,3 +54,4 @@ $section-top-margin: $logo-circle-diameter;
     }
   }
 }
+
