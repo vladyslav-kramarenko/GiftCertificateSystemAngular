@@ -1,0 +1,39 @@
+<!-- checkout.component.html -->
+<main>
+  <div class="container my-5 confirm-order-section main-section">
+    <h2>Confirm Order:</h2>
+    <div>
+      <p><strong>Name:</strong> {{firstName}} {{lastName}}</p>
+      <p><strong>Email:</strong> {{email}}</p>
+    </div>
+
+    <div class="order-data">
+      <table>
+        <thead>
+        <tr>
+          <th>Certificate</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Cost</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of cart">
+          <td>{{ item.certificate.name }}</td>
+          <td>{{ item.certificate.price }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.certificate.price * item.quantity }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <br>
+    <div class="summary">
+      <p class="mat-body-strong">Total Cost: {{ getTotalCost() }}</p>
+    </div>
+    <div class="buttons col-12 text-end">
+      <button (click)="backToCart()" class="btn btn-secondary">Back to Cart</button>
+      <button (click)="placeOrder()" class="btn btn-primary">Place Order</button>
+    </div>
+  </div>
+</main>
