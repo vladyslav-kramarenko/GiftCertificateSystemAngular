@@ -17,7 +17,6 @@ export class CertificateService {
   }
 
   getCertificate(id: number): Observable<any> {
-    console.log(`Getting certificate with id: ${id}`);
     return this.http.get<any>(`${environment.API_URL}/certificates/${id}`);
   }
 
@@ -35,10 +34,11 @@ export class CertificateService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    // You can add more logic here if needed
     if (error.status === 204) {
+      console.log('Certificates not found: ' + error);
       this.errorSubject.next('Certificates not found');
     }
+    console.log(error);
     return throwError(error);
   }
 
@@ -51,13 +51,6 @@ export class CertificateService {
     minPrice: number,
     maxPrice: number
   ): Observable<Certificate[]> {
-    console.log("entered searchGiftCertificates()");
-    console.log("searchTerm = " + searchTerm);
-    console.log("pageNo = " + pageNo);
-    console.log("pageSize = " + pageSize);
-    console.log("sortParams = " + sortParams);
-    console.log("minPrice = " + minPrice);
-    console.log("maxPrice = " + maxPrice);
 
     let params = new HttpParams()
       .set('searchTerm', searchTerm)
