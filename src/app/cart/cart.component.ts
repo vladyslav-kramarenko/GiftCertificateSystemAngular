@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {CertificateService} from '../shared/services/certificate.service';
 import {forkJoin} from "rxjs";
 import {Certificate} from '../shared/models/ICertificate';
+import {AuthService} from '../shared/services/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -11,7 +13,10 @@ import {Certificate} from '../shared/models/ICertificate';
 export class CartComponent implements OnInit {
   cart: { certificate: Certificate, quantity: number }[] = [];
 
-  constructor(private certificateService: CertificateService) {
+  constructor(
+    private certificateService: CertificateService,
+    private authService: AuthService,
+    private router: Router) {
   }
 
   ngOnInit(): void {
@@ -45,7 +50,7 @@ export class CartComponent implements OnInit {
     if (index !== -1) {
       cart.splice(index, 1);
       localStorage.setItem('cart', JSON.stringify(cart));
-     const indexInCartArray = this.cart.findIndex(cartItem => cartItem.certificate.id === item.certificate.id);
+      const indexInCartArray = this.cart.findIndex(cartItem => cartItem.certificate.id === item.certificate.id);
       if (indexInCartArray !== -1) {
         this.cart.splice(indexInCartArray, 1);
       }
@@ -65,9 +70,9 @@ export class CartComponent implements OnInit {
     );
   }
 
-  changeQuantity(item: {certificate: Certificate, quantity: number}): void {
+  changeQuantity(item: { certificate: Certificate, quantity: number }): void {
     const cartData = localStorage.getItem('cart');
-    const cart: {id: number, quantity: number}[] = cartData ? JSON.parse(cartData) : [];
+    const cart: { id: number, quantity: number }[] = cartData ? JSON.parse(cartData) : [];
     const cartItem = cart.find(cartItem => cartItem.id === item.certificate.id);
     if (cartItem) {
       cartItem.quantity = item.quantity;
@@ -91,5 +96,13 @@ export class CartComponent implements OnInit {
         );
       }
     );
+  }
+
+  checkout(): void {
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['/checkout']);
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
 }
