@@ -33,17 +33,3 @@ header {
 .material-symbols-outlined:hover{
   border: 1px solid $gray-color;
 }
-
-.login-signup {
-  span {
-    text-decoration: none;
-    margin-left: 5px;
-    border-radius: 5px;
-    border: 1px solid $primary-color;
-    padding: 5px;
-
-    &:first-child {
-      margin-right: 5px;
-    }
-  }
-}
