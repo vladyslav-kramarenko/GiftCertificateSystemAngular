@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../auth.service';
+import {AuthService} from '../../shared/services/auth.service';
 import {FormGroup, FormControl, Validators, ValidatorFn, AbstractControl} from '@angular/forms';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-register',
@@ -18,7 +19,10 @@ export class RegisterComponent implements OnInit {
 
   serverErrorMessage: string = '';
 
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {
   }
 
   ngOnInit() {
@@ -27,30 +31,18 @@ export class RegisterComponent implements OnInit {
   onFormSubmit() {
     if (this.registerForm.valid) {
       const {email, password, firstname, lastname} = this.registerForm.value;
-
-      // this.authService.registerUser(
-      //   this.registerForm.value.email,
-      //   this.registerForm.value.password,
-      //   this.registerForm.value.firstname,
-      //   this.registerForm.value.lastname
-      // )
       this.authService.registerUser(email, password, firstname, lastname)
         .subscribe(
           res => {
             console.log("Registered successfully");
             this.serverErrorMessage = '';
+            this.router.navigate(['/login']);
           }, err => {
             console.error(err);
             this.serverErrorMessage = err.error?.message || 'An unknown error occurred.';
           }
         );
     }
-  }
-
-  passwordsMatch(): boolean {
-    const password = this.registerForm.get('password')?.value;
-    const repeatPassword = this.registerForm.get('repeatPassword')?.value;
-    return password === repeatPassword;
   }
 }
 
