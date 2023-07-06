@@ -1,0 +1,12 @@
+<main class="shadow-border rounded-1">
+  <h1 mat-dialog-title>{{data.title}}</h1>
+  <div mat-dialog-content>
+    {{data.message}}
+  </div>
+
+  <div mat-dialog-actions class="btn-group" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-secondary" (click)="onNoClick()">No</button>
+    <button type="button" class="btn btn-primary" [mat-dialog-close]="true" cdkFocusInitial>Yes</button>
+  </div>
+
+</main>
