@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +14,11 @@ export class FavoriteService {
     this.favoritesSubject = new BehaviorSubject(this.favorites);
   }
 
-  getFavorites(): Observable<string[]> {
-    return this.favoritesSubject.asObservable();
+  getFavorites(page: number, size: number): Observable<string[]> {
+    const startIndex = page * size;
+    const endIndex = startIndex + size;
+    const favoritesPage = this.favorites.slice(startIndex, endIndex);
+    return of(favoritesPage);
   }
 
   addToFavorites(id: string): void {

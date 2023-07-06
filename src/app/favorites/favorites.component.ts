@@ -3,8 +3,9 @@ import {FavoriteService} from '../shared/services/favorite.service';
 import {CertificateService} from '../shared/services/certificate.service';
 import {CartService} from '../shared/services/cart.service';
 import {Certificate} from '../shared/models/ICertificate';
-import {catchError, forkJoin, Observable, of} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {catchError, forkJoin, Observable, of, Subject, Subscription} from 'rxjs';
+import {throttleTime, map} from 'rxjs/operators';
+import {HostListener} from '@angular/core';
 
 @Component({
   selector: 'app-favorites',
@@ -17,6 +18,20 @@ export class FavoritesComponent implements OnInit {
   loading: boolean = false;
   allLoaded: boolean = false;
 
+  private scrollSubject = new Subject();
+  private scrollSubscription?: Subscription;
+  private page: number = 0;
+
+  @HostListener('window:scroll', ['$event'])
+  onScroll(event: any): void {
+    const currentPosition = window.pageYOffset;
+    const maxPosition = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+
+    if (currentPosition >= maxPosition) {
+      this.loadMoreCertificates();
+    }
+  }
+
   constructor(
     private certificateService: CertificateService,
     private favoriteService: FavoriteService,
@@ -26,16 +41,27 @@ export class FavoritesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMoreCertificates();
+    this.scrollSubscription = this.scrollSubject.pipe(
+      throttleTime(200)
+    ).subscribe(() => {
+      this.loadMoreCertificates();
+    });
   }
+
+  ngOnDestroy(): void {
+    if (this.scrollSubscription) {
+      this.scrollSubscription.unsubscribe();
+    }
+  }
+
 
   loadMoreCertificates(): void {
     if (!this.loading && !this.allLoaded) {
       this.loading = true;
 
-      this.favoriteService.getFavorites().subscribe(favoriteIds => {
-        const loadIds = favoriteIds.slice(this.favorites.length, this.favorites.length + 10);
-        if (loadIds.length > 0) {
-          this.getCertificates(loadIds).subscribe(certificates => {
+      this.favoriteService.getFavorites(this.page, 10).subscribe(favoriteIds => {
+        if (favoriteIds.length > 0) {
+          this.getCertificates(favoriteIds).subscribe(certificates => {
             this.favorites = [...this.favorites, ...certificates];
             this.loading = false;
           });
@@ -44,6 +70,7 @@ export class FavoritesComponent implements OnInit {
           this.loading = false;
         }
       });
+      this.page++;
     }
   }
 
@@ -71,6 +98,7 @@ export class FavoritesComponent implements OnInit {
       }, 200);
     }
   }
+
   onTileMouseDown(event: Event) {
     const tileElement = (event.target as Element).closest('.certificate-tile');
     if (tileElement) {
