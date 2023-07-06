@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {CertificateService} from '../shared/services/certificate.service';
-import {forkJoin} from "rxjs";
 import {Certificate} from '../shared/models/ICertificate';
 import {AuthService} from '../shared/services/auth.service';
 import {Router} from '@angular/router';
@@ -58,16 +57,15 @@ export class CartComponent implements OnInit {
   }
 
   getTotalPrice(): number {
-    return Math.round(
-      this.cart.reduce(
-        (
-          total: number, item: {
-            certificate: Certificate;
-            quantity: number
-          }
-        ) => total + item.certificate.price * item.quantity, 0
-      )
+    const totalPrice = this.cart.reduce(
+      (
+        total: number, item: {
+          certificate: Certificate;
+          quantity: number
+        }
+      ) => total + item.certificate.price * item.quantity, 0
     );
+    return Math.round(totalPrice * 100) / 100;
   }
 
   changeQuantity(item: { certificate: Certificate, quantity: number }): void {
@@ -78,24 +76,6 @@ export class CartComponent implements OnInit {
       cartItem.quantity = item.quantity;
       localStorage.setItem('cart', JSON.stringify(cart));
     }
-  }
-
-
-  updateCart(): void {
-    const cartData = localStorage.getItem('cart');
-    const cart: {
-      id: number, quantity: number
-    }[] = cartData ? JSON.parse(cartData) : [];
-    const requests = cart.map(itemId => this.certificateService.getCertificate(itemId.id));
-    forkJoin(requests).subscribe(
-      (responses: Certificate[]) => {
-        this.cart = responses.map((item, index) => ({
-            certificate: item,
-            quantity: cart.filter(itemId => itemId.id === item.id).length
-          })
-        );
-      }
-    );
   }
 
   checkout(): void {
