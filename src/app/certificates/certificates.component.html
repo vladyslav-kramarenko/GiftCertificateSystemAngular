@@ -1,13 +1,13 @@
 <main>
   <div class="category-wrapper">
-    <div id="popular-categories" class="category-section">
-      <div class="category-title">
+    <div id="popular-categories" class="category-section d-flex justify-content-between">
+      <div class="category-title  d-flex">
         <h3>Popular<br>Categories</h3>
       </div>
     </div>
   </div>
 
-  <div class="filter-sort-wrapper">
+  <div class="filter-sort-wrapper d-flex justify-content-between flex-column flex-md-row">
     <label for="price-range">Price Range:</label>
     <input type="text" id="min-price" placeholder="$ Min" [(ngModel)]="minPrice" (change)="initSearch()">
 
@@ -16,7 +16,7 @@
 
     <input type="text" id="max-price" placeholder="$ Max" [(ngModel)]="maxPrice" (change)="initSearch()">
 
-    <div class="sort-section">
+    <div class="sort-section d-flex">
       <label for="sort-options">Sort By:</label>
       <select id="sort-options" [(ngModel)]="sortBy" (change)="initSearch()">
         <option value="create_date,desc">Date: old to new</option>
@@ -29,21 +29,21 @@
     </div>
   </div>
   <div class="favorites certificate-container">
-    <div *ngFor="let certificate of certificates" class="certificate-tile flex-column">
+    <div *ngFor="let certificate of certificates" class="certificate-tile d-flex flex-column">
       <img [src]="certificate.img ? certificate.img :'assets/coupon.png' "
            alt="Certificate Image"
            (mousedown)="onTileMouseDown($event)"
            (mouseup)="onTileMouseUp($event)"
            routerLink="/certificates/{{ certificate.id }}"
       >
-      <h5 class="certificate-card-header"
+      <h5 class="certificate-card-header d-flex  justify-content-between"
           (mousedown)="onTileMouseDown($event)"
           (mouseup)="onTileMouseUp($event)"
           routerLink="/certificates/{{ certificate.id }}"
       >
         {{ certificate.name }}
       </h5>
-      <div class="actions flex-row">
+      <div class="actions d-flex flex-row  justify-content-between">
         <app-favorite-button [itemId]="certificate.id" class="fav-btn"></app-favorite-button>
         <h5>{{ certificate.price }}$</h5>
         <span (click)="addToCart(certificate.id)"
@@ -56,7 +56,7 @@
   <div *ngIf="!errorMessage" class="load-more-btn text-center">
     <button class="btn btn-primary" (click)="loadMoreResults(20)">Load More Certificates</button>
   </div>
-  <div *ngIf="errorMessage" class="error-message">
+  <div *ngIf="errorMessage" class="error-message d-flex">
     {{ errorMessage }}
   </div>
 </main>

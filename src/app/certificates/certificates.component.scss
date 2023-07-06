@@ -1,8 +1,6 @@
 @import "src/styles/variables";
 
 .category-section {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
 
@@ -11,7 +9,6 @@
   }
 
   .category-tile {
-    flex: 0 0 auto;
     margin: 0 10px;
     border: 1px solid $gray-color;
     border-radius: 5px;
@@ -46,8 +43,8 @@
     }
 
     .category-tile {
-      width: 20%; /* adjust as needed */
-      margin: 5px auto; /* auto centers the tile */
+      width: 20%;
+      margin: 5px auto;
       img {
         width: 80%;
         height: auto;
@@ -65,18 +62,12 @@
 }
 
 .filter-sort-wrapper {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
   border: 1px solid $gray-color;
   border-radius: 5px;
   padding: 5px;
   margin: 0 20px;
   @media (max-width: 768px) {
-    .filter-sort-item {
-      width: 100%;
-    }
-    flex-direction: column;
     align-items: stretch;
   }
 
@@ -92,7 +83,6 @@
   }
 
   .sort-section {
-    display: flex;
     align-items: center;
     margin: 5px;
 
@@ -120,91 +110,12 @@
   }
 }
 
-.certificate-section {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  margin-top: 20px;
-
-  .certificate-tile {
-    width: 45%;
-    min-width: 250px;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid $gray-color;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    margin-left: 10px;
-    margin-right: 10px;
-
-    &:hover {
-      box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
-    }
-
-    // For tablets
-    @media (min-width: 768px) {
-      width: 30%;
-    }
-    // For desktops
-    @media (min-width: 992px) {
-      width: 24%;
-    }
-    // For larger desktops
-    @media (min-width: 1200px) {
-      width: 17%;
-    }
-
-    img {
-      max-height: 200px;
-      width: 100%;
-      object-fit: cover;
-    }
-
-    .certificate-info {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px;
-
-      .certificate-details {
-        flex: 1;
-      }
-
-      .certificate-meta {
-        align-items: flex-end;
-
-        .favorites-icon {
-          background-color: $white-color;
-          border-radius: 5px;
-          padding: 2px;
-          border: 1px solid $white-color;
-        }
-
-        .favorites-icon:hover {
-          border: 1px solid $primary-color;
-        }
-      }
-    }
-
-    .certificate-action {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px;
-
-      .add-to-cart {
-        padding: 5px 10px;
-      }
-    }
-  }
-}
-
 p, .certificate-name, .description {
   margin: 0;
 }
 
 .certificate-tile {
   cursor: pointer;
-  display: flex;
   border: 1px solid #000;
   border-radius: 5px;
   padding: 10px;
@@ -214,9 +125,7 @@ p, .certificate-name, .description {
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 
   &:hover {
-    /* Scale the tile up slightly when hovered */
     transform: scale(1.05);
-    /* Add a shadow to create a "lifting" effect */
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   }
 
@@ -227,9 +136,7 @@ p, .certificate-name, .description {
   }
 
   .actions {
-    display: flex;
     margin-top: auto;
-    justify-content: space-between;
     width: 100%;
   }
 
@@ -251,30 +158,11 @@ p, .certificate-name, .description {
   transform: scale(0.9);
 }
 
-.certificate-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .certificate-container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 10px;
 }
-
-.error {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  font-size: 1.5em;
-}
-
 
 @media screen and (max-width: 1200px) {
   .certificate-container {
@@ -304,6 +192,8 @@ p, .certificate-name, .description {
 }
 
 .error-message {
+    justify-content: center;
+    align-items: center;
   padding: 10px;
   margin: 10px 0;
   border: 1px solid #f00;
