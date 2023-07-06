@@ -14,7 +14,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private searchTerm = new Subject<string>();
   private subscriptions: Subscription[] = [];
   dropdownVisible = false;
-  
+  userId: number | null = null;
+
   constructor(
     private searchService: SearchService,
     public authService: AuthService,
@@ -23,6 +24,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadUserId();
     this.subscriptions.push(
       this.searchTerm.pipe(
         debounceTime(500),
@@ -45,8 +47,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.router.navigate(['/login']);
   }
 
-  selectOption(value: number): void {
-    console.log('Selected option:', value);
-    // Implement functionality here based on the selected option...
+  loadUserId(): void {
+    this.userId = this.authService.getUserId();
   }
 }

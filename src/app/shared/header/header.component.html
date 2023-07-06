@@ -8,14 +8,15 @@
           </span>
         <div class="dropdown-content" [class.show]="dropdownVisible">
           <a routerLink="certificates/new">Create new Certificate</a>
+          <a [routerLink]="'users/' + userId + '/orders'">My orders</a>
         </div>
       </div>
 
       <a routerLink="/home" class="mobile-logo">
-        <img class="ml-3 header-logo" style="height: 30px;" src="assets/JoyCardLogo.png" alt="Joy Card">
+        <img class="ml-3 header-logo" src="assets/JoyCardLogo.png" alt="Joy Card">
       </a>
       <a routerLink="/home" class="desktop-logo">
-        <img class="ml-3 header-logo" style="height: 30px;" src="assets/JoyCardLogoHorizontal.png" alt="Joy Card">
+        <img class="ml-3 header-logo" src="assets/JoyCardLogoHorizontal.png" alt="Joy Card">
       </a>
 
     </div>

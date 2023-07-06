@@ -1,12 +1,22 @@
 @import "src/styles/variables";
-.mobile-logo{
+
+.mobile-logo {
   padding-right: 5px;
   padding-left: 5px;
+
+  img {
+    height: 30px;
+  }
 }
 
-.desktop-logo{
+.desktop-logo {
   padding-left: 10px;
+
+  img {
+    height: 30px;
+  }
 }
+
 @media (max-width: 767px) {
   header {
   }
@@ -52,7 +62,7 @@ header {
   border: 1px solid $primary-color;
 }
 
-.material-symbols-outlined:hover{
+.material-symbols-outlined:hover {
   border: 1px solid $gray-color;
 }
 
@@ -60,7 +70,7 @@ header {
   display: none;
   position: absolute;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   background-color: #f9f9f9;
 }
