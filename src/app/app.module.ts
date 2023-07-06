@@ -4,27 +4,28 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatButtonModule} from '@angular/material/button';
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatInputModule} from '@angular/material/input';
+import {MatTableModule} from "@angular/material/table";
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatInputModule} from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
 
 import {AuthModule} from './auth/auth.module';
 import {SharedModule} from './shared/shared.module';
 import {AppRoutingModule} from './app-routing.module';
 
-import {CertificatesComponent} from './certificates/certificates.component';
+import {CertificateEditComponent} from './certificate-edit/certificate-edit.component';
 import {CertificateInfoComponent} from './certificate-info/certificate.component';
+import {CertificatesComponent} from './certificates/certificates.component';
+import {UserOrdersComponent} from './user-orders/user-orders.component';
 import {ErrorPageComponent} from './error-page/error-page.component';
-import {AppComponent} from './app.component';
-import {CartComponent} from './cart/cart.component';
 import {FavoritesComponent} from './favorites/favorites.component';
 import {CheckoutComponent} from './checkout/checkout.component';
-import {CertificateEditComponent} from './certificate-edit/certificate-edit.component';
-import {UserOrdersComponent} from './user-orders/user-orders.component';
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {MatTableModule} from "@angular/material/table";
+import {CartComponent} from './cart/cart.component';
+import {AppComponent} from './app.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import {MatTableModule} from "@angular/material/table";
     MatCardModule,
     MatIconModule,
     MatTableModule,
+    MatDialogModule,
     MatProgressSpinnerModule,
   ],
   providers: [],
