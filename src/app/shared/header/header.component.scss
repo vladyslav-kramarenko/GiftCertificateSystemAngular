@@ -1,8 +1,31 @@
 @import "src/styles/variables";
+.mobile-logo{
+  padding-right: 5px;
+  padding-left: 5px;
+}
 
-@media (max-width: 600px) {
+.desktop-logo{
+  padding-left: 10px;
+}
+@media (max-width: 767px) {
   header {
-    height: 70px;
+  }
+  .desktop-logo {
+    display: none;
+  }
+
+  .mobile-logo {
+    display: block;
+  }
+}
+
+@media (min-width: 768px) {
+  .desktop-logo {
+    display: block;
+  }
+
+  .mobile-logo {
+    display: none;
   }
 }
 
@@ -23,7 +46,6 @@ header {
   'wght' 800,
   'GRAD' 0,
   'opsz' 48;
-  margin-right: $margin-right-icon;
   background-color: $primary-color;
   border-radius: 5px;
   padding: 4px;
@@ -32,4 +54,28 @@ header {
 
 .material-symbols-outlined:hover{
   border: 1px solid $gray-color;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  background-color: #f9f9f9;
+}
+
+.show {
+  display: block;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
 }

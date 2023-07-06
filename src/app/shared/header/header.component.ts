@@ -13,7 +13,8 @@ import {Router} from '@angular/router';
 export class HeaderComponent implements OnInit, OnDestroy {
   private searchTerm = new Subject<string>();
   private subscriptions: Subscription[] = [];
-
+  dropdownVisible = false;
+  
   constructor(
     private searchService: SearchService,
     public authService: AuthService,
@@ -42,5 +43,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onLogoutClick() {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  selectOption(value: number): void {
+    console.log('Selected option:', value);
+    // Implement functionality here based on the selected option...
   }
 }
