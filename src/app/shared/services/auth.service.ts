@@ -64,29 +64,35 @@ export class AuthService {
 
     try {
       const decodedToken: any = jwt_decode(token);
-      const authorities: string[] = decodedToken.roles || [];
-      const userAuthority = authorities.find(a => a.startsWith('USER_ID_'));
-      if (!userAuthority) {
-        console.log("userAuthority is null")
-        return null;
-      }
-
-      const idString = userAuthority.split('_').pop();
-      return Number(idString);
+      const userAuthority = decodedToken.roles?.find((a: string) => a.startsWith('USER_ID_'));
+      return userAuthority ? Number(userAuthority.split('_').pop()) : null;
     } catch (error) {
       console.error('Error decoding token', error);
       return null;
     }
   }
 
+  getUserRoles(): string[] {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      return [];
+    }
+
+    try {
+      const decodedToken: any = jwt_decode(token);
+      const authorities: string[] = decodedToken.roles || [];
+      const userRoles: string[] = authorities.filter((a: string) => a && !a.startsWith('USER_ID_'));
+      return userRoles.map(role => role?.toLowerCase() || '');
+    } catch (error) {
+      console.error('Error decoding token', error);
+      return [];
+    }
+  }
+
   getUserDetails(id: number): Observable<User> {
     const url = `${environment.API_URL}/users/${id}`;
     const token = localStorage.getItem('authToken');
-    console.log("token: " + token);
     const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-    console.log(headers);
-
-    // return this.http.get<User>(url, {headers});
     return this.http.get<User>(url, {headers}).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) this.updateStatusToNotAuthorized();
