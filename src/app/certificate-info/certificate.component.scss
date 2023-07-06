@@ -14,6 +14,7 @@ main {
     .edit-icon {
       padding: 5px;
       cursor: pointer;
+
       &:hover {
         transform: scale(1.2);
       }
@@ -37,13 +38,16 @@ main {
       }
 
       .description-section {
+        width: 100%;
         padding: 0 5px;
+        display: flex;
 
         label {
           font-weight: bold;
         }
 
-        p.description {
+        .description {
+          width: 100%;
           margin-top: 5px;
           height: 90%;
           border: 1px solid $gray-color;
