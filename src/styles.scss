@@ -2,7 +2,6 @@
 
 
 body {
-  //min-height: calc(100vh - #{$height-of-header});
   font-family: $font-family-base;
   background-color: $white-color;
   display: flex;
@@ -30,10 +29,6 @@ footer {
 body,html {
   margin: 0;
   padding: 0;
-}
-
-a {
-  cursor: pointer;
 }
 
 .btn {
@@ -131,5 +126,11 @@ textarea {
 
   &:active {
     transform: scale(0.9);
+  }
+}
+.actions{
+  .btn{
+    margin-right: 8px;
+    width: 100%;
   }
 }
