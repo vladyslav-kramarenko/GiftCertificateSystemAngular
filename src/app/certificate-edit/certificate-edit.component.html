@@ -50,11 +50,18 @@
                 </div>
               </div>
             </div>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-              <button class="btn btn-secondary me-md-2" [routerLink]="['/certificates', this.certificate.id]"
-                      type="button">Back
+            <div class="actions d-grid gap-2 d-md-flex justify-content-md-end">
+              <button class="btn btn-secondary me-md-2"
+                [routerLink]="['/certificates', this.certificate.id]"
+                type="button">
+                Back
               </button>
-              <button class="btn btn-primary save-btn" type="submit">Save</button>
+              <button class="btn btn-danger del-btn" type="button" (click)="deleteCertificate()">
+                Delete
+              </button>
+              <button class="btn btn-primary save-btn" type="submit">
+                Save
+              </button>
             </div>
           </form>
         </div>

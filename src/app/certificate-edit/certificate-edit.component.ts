@@ -5,6 +5,8 @@ import {CertificateService} from '../shared/services/certificate.service';
 import {Certificate} from '../shared/models/ICertificate';
 import {Tag} from '../shared/models/ITag';
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatDialog} from "@angular/material/dialog";
+import {ConfirmDialogComponent} from "../shared/confirm-dialog/confirm-dialog.component";
 
 @Component({
   selector: 'app-certificate-edit',
@@ -26,7 +28,8 @@ export class CertificateEditComponent implements OnInit {
     private certificateService: CertificateService,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {
     this.editForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -83,6 +86,27 @@ export class CertificateEditComponent implements OnInit {
 
       });
     }
+  }
+
+  deleteCertificate(): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '300px',
+      data: {
+        message: 'Are you sure you want to delete this certificate?',
+        title: 'Delete'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.certificateService.deleteCertificate(this.certificate.id).subscribe(() => {
+          this.snackBar.open('Certificate deleted!', 'Close', {
+            duration: 2000,
+          });
+          this.router.navigate(['/home']);
+        });
+      }
+    });
   }
 
   addTag(): void {
