@@ -8,14 +8,15 @@
   </div>
 
   <div class="filter-sort-wrapper d-flex justify-content-between flex-column flex-md-row">
-    <label for="price-range">Price Range:</label>
-    <input type="text" id="min-price" placeholder="$ Min" [(ngModel)]="minPrice" (change)="initSearch()">
-
-    <!--    TODO replace with dual slider-->
-    <input id="price-range" class="range-slider__range" type="range" value="0" min="0" max="500">
-
-    <input type="text" id="max-price" placeholder="$ Max" [(ngModel)]="maxPrice" (change)="initSearch()">
-
+    <label>Price Range:</label>
+    <span>
+      <label for="min-price">Min price:</label>
+      <input type="text" id="min-price" placeholder="$ Min" [(ngModel)]="minPrice" (change)="initSearch()">
+    </span>
+    <span>
+      <label for="max-price">Max price:</label>
+      <input type="text" id="max-price" placeholder="$ Max" [(ngModel)]="maxPrice" (change)="initSearch()">
+    </span>
     <div class="sort-section d-flex">
       <label for="sort-options">Sort By:</label>
       <select id="sort-options" [(ngModel)]="sortBy" (change)="initSearch()">
