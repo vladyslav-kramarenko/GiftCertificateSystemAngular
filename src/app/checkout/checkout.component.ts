@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../shared/services/auth.service';
 import {CartService} from '../shared/services/cart.service';
+import {OrderService} from '../shared/services/order.service';
 import {CertificateService} from '../shared/services/certificate.service';
 import {Router} from '@angular/router';
 import {forkJoin} from "rxjs";
@@ -25,6 +26,7 @@ export class CheckoutComponent implements OnInit {
     private certificateService: CertificateService,
     private authService: AuthService,
     private cartService: CartService,
+    private orderService: OrderService,
     private snackBar: MatSnackBar,
     private router: Router,
   ) {
@@ -80,7 +82,7 @@ export class CheckoutComponent implements OnInit {
       giftCertificateId: item.certificate.id,
       quantity: item.quantity
     }));
-    this.cartService.createOrder(this.user.id, giftCertificates).subscribe(() => {
+    this.orderService.createOrder(this.user.id, giftCertificates).subscribe(() => {
 
       this.cart = [];
       localStorage.setItem('cart', JSON.stringify(this.cart));
