@@ -303,3 +303,12 @@ p, .certificate-name, .description {
   padding-bottom: 10px;
 }
 
+.error-message {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #f00;
+  color: #f00;
+  background-color: #fdd;
+  text-align: center;
+  overflow: auto;
+}

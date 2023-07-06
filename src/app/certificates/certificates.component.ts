@@ -53,6 +53,7 @@ export class CertificatesComponent implements OnInit {
   }
 
   loadMoreResults(size: number) {
+    this.errorMessage = '';
     const sortParams = this.sortBy.split(',').map(s => s.trim());
     console.log('loadMoreResults started');
     console.log('size = '+size);

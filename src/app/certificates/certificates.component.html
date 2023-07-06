@@ -47,17 +47,16 @@
         <app-favorite-button [itemId]="certificate.id" class="fav-btn"></app-favorite-button>
         <h5>{{ certificate.price }}$</h5>
         <span (click)="addToCart(certificate.id)"
-              class="material-symbols-outlined cart-icon icon"
-        >
+              class="material-symbols-outlined cart-icon icon">
         shopping_cart
       </span>
       </div>
     </div>
   </div>
-  <div class="load-more-btn text-center">
+  <div *ngIf="!errorMessage" class="load-more-btn text-center">
     <button class="btn btn-primary" (click)="loadMoreResults(20)">Load More Certificates</button>
   </div>
-  <div *ngIf="errorMessage" class="error">
+  <div *ngIf="errorMessage" class="error-message">
     {{ errorMessage }}
   </div>
 </main>
