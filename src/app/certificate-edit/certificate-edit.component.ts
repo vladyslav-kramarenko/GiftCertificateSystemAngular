@@ -70,14 +70,17 @@ export class CertificateEditComponent implements OnInit {
     formData.tags = this.tags;
     if (!formData.img) formData.img = "";
     if (this.isNew) {
-      this.certificateService.createCertificate(formData).subscribe(() => {
-        this.router.navigate(['/']);
+      this.certificateService.createCertificate(formData).subscribe((response) => {
+        const newCertificate: Certificate = response.body;
+        this.router.navigate(['/certificates', newCertificate.id]);
       });
     } else {
       this.certificateService.updateCertificate(this.certificate.id, formData).subscribe(() => {
         this.snackBar.open('Certificate was updated!', 'Close', {
           duration: 2000,
         });
+        this.router.navigate(['/certificates', this.certificate.id]);
+
       });
     }
   }

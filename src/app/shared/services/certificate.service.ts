@@ -44,7 +44,7 @@ export class CertificateService {
     Observable<any> {
     const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-    return this.http.post<any>(`${environment.API_URL}/certificates`, data, {headers})
+    return this.http.post<any>(`${environment.API_URL}/certificates`, data, {headers,observe: 'response'})
       .pipe(
         catchError(this.handleError)
       );
