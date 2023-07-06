@@ -1,0 +1,53 @@
+@import "src/styles/variables";
+
+.tag-input {
+  display: flex;
+
+  .add-tag-btn {
+    min-width: 100px;
+    margin-top: 0;
+    background-color: $primary-color;
+  }
+}
+
+main {
+  display: flex;
+}
+
+.price-and-valid-section {
+  display: flex;
+  width: 100%;
+
+  span {
+    width: 100%;
+  }
+}
+
+.certificate-edit-section {
+  width: 100%;
+}
+
+.tag-list {
+  border: 1px solid $gray-color;
+  border-radius: 5px;
+
+  .tag {
+    cursor: pointer;
+    background-color: $primary-color;
+    //padding: 5px 10px;
+    //margin: 5px;
+    //border-radius: 5px;
+
+
+    .delete-tag {
+      //cursor: pointer;
+      color: $red-color;
+      font-size: 1em;
+      padding-left: 5px;
+    }
+  }
+}
+
+.save-btn {
+  background-color: $primary-color;
+}

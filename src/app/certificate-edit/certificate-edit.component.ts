@@ -1,0 +1,101 @@
+import {Component, OnInit} from '@angular/core';
+import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CertificateService} from '../shared/services/certificate.service';
+import {Certificate} from '../shared/models/ICertificate';
+import {Tag} from '../shared/models/ITag';
+import {MatSnackBar} from "@angular/material/snack-bar";
+
+@Component({
+  selector: 'app-certificate-edit',
+  templateUrl: './certificate-edit.component.html',
+  styleUrls: ['./certificate-edit.component.scss']
+})
+
+export class CertificateEditComponent implements OnInit {
+
+  editForm: FormGroup;
+  headerText = 'Edit Certificate';
+  certificate: Certificate = <Certificate>{};
+  tags: Tag[] = [];
+  newTag: string = '';
+  isNew: boolean;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private certificateService: CertificateService,
+    private snackBar: MatSnackBar,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    this.editForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      price: ['', Validators.required],
+      duration: ['', Validators.required],
+      img: [''],
+      tags: [''],
+    });
+    this.isNew = this.route.snapshot.params['id'] === undefined;
+    this.certificate.id = this.isNew ? '' : this.route.snapshot.params['id'];
+  }
+
+  ngOnInit(): void {
+    this.editForm = new FormGroup({
+      name: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required),
+      price: new FormControl('', Validators.required),
+      duration: new FormControl('', Validators.required),
+      img: new FormControl(''),
+      tags: new FormControl(''),
+    });
+    if (!this.isNew) {
+      this.certificateService.getCertificate(this.certificate.id).subscribe((data: Certificate) => {
+        this.certificate = data;
+        this.tags = this.certificate.tags;
+        this.editForm.patchValue({
+          name: this.certificate.name,
+          description: this.certificate.description,
+          price: this.certificate.price,
+          duration: this.certificate.duration,
+          img: this.certificate.img,
+          tags: this.tags.map(tag => tag.name).join(', ')
+        });
+      });
+    }
+  }
+
+  onFormSubmit(): void {
+    let formData: Certificate = this.editForm.value;
+    formData.tags = this.tags;
+    if (!formData.img) formData.img = "";
+    if (this.isNew) {
+      this.certificateService.createCertificate(formData).subscribe(() => {
+        this.router.navigate(['/']);
+      });
+    } else {
+      this.certificateService.updateCertificate(this.certificate.id, formData).subscribe(() => {
+        this.snackBar.open('Certificate was updated!', 'Close', {
+          duration: 2000,
+        });
+      });
+    }
+  }
+
+  addTag(): void {
+    if (this.newTag.trim()) {
+      let newTag: Tag = {
+        name: this.newTag.trim(),
+        _links: {}
+      };
+      this.tags.push(newTag);
+      this.newTag = '';
+      this.editForm.controls['tags'].setValue(this.tags.map(tag => tag.name).join(', '));
+    }
+  }
+
+  removeTag(index: number): void {
+    this.tags.splice(index, 1);
+    this.editForm.controls['tags'].setValue(this.tags.map(tag => tag.name).join(', '));
+  }
+}

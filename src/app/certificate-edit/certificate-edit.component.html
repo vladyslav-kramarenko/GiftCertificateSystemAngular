@@ -1,0 +1,64 @@
+<main class="justify-content-center">
+  <div class="certificate-edit-section main-section flex-column">
+    <h2 class="section-header">{{ headerText }}</h2>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <form [formGroup]="editForm" (ngSubmit)="onFormSubmit()">
+            <div class="mb-3">
+              <label for="certificate-name" class="form-label">Certificate Name</label>
+              <input type="text" formControlName="name" class="form-control" id="certificate-name"
+                     placeholder="Certificate Name">
+            </div>
+            <div class="mb-3">
+              <label for="certificate-image" class="form-label">Certificate Image</label>
+              <input type="file" formControlName="img" class="form-control" id="certificate-image" accept="image/*">
+            </div>
+            <div class="price-and-valid-section flex-row justify-content-between">
+              <span class="mb-3">
+              <label for="certificate-price" class="form-label">Price ($)</label>
+              <input type="text" formControlName="price" class="form-control" id="certificate-price"
+                     placeholder="Price">
+              </span>
+              <span class="mb-3">
+              <label for="certificate-validity" class="form-label">Valid for (days)</label>
+              <input type="number" formControlName="duration" class="form-control" id="certificate-validity"
+                     placeholder="Duration in days"
+                     min="1">
+              </span>
+            </div>
+            <div class="mb-3">
+              <label for="certificate-description" class="form-label">Description</label>
+              <textarea formControlName="description" class="form-control" id="certificate-description"
+                        placeholder="Description"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="tag-input" class="form-label">Tags</label>
+              <div class="tag-input flex-row">
+                <input type="text" class="form-control" id="tag-input" placeholder="Start typing tag..."
+                       [(ngModel)]="newTag" [ngModelOptions]="{standalone: true}"/>
+                <button class="btn btn-primary add-tag-btn" (click)="addTag()">Add tag</button>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="tag-list" class="form-label">Tag List</label>
+              <div id="tag-list" class="tag-list">
+                <div *ngFor="let tag of tags; let i = index"
+                     (click)="removeTag(i)"
+                     class="tag d-inline-block p-2 text-white m-2 rounded">
+                  {{ tag.name }} <span class="delete-tag text-danger">x</span>
+                </div>
+              </div>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button class="btn btn-secondary me-md-2" [routerLink]="['/certificates', this.certificate.id]"
+                      type="button">Back
+              </button>
+              <button class="btn btn-primary save-btn" type="submit">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
