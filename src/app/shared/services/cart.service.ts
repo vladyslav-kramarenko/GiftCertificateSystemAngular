@@ -51,12 +51,12 @@ export class CartService {
     this._itemCount.next(this._itemCount.value - 1);
   }
 
-  createOrder(userId: number, giftCertificates: any[]) {
-    console.log("giftCertificates:");
-    console.log(giftCertificates);
-    const url = `${environment.API_URL}/orders`;
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-    return this.http.post(url, {userId, giftCertificates}, {headers});
-  }
+  // createOrder(userId: number, giftCertificates: any[]) {
+  //   console.log("giftCertificates:");
+  //   console.log(giftCertificates);
+  //   const url = `${environment.API_URL}/orders`;
+  //   const token = localStorage.getItem('authToken');
+  //   const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+  //   return this.http.post(url, {userId, giftCertificates}, {headers});
+  // }
 }
