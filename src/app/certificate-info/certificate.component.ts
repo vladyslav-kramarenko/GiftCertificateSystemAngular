@@ -4,13 +4,14 @@ import {CertificateService} from "../shared/services/certificate.service";
 import {CartService} from "../shared/services/cart.service";
 import {Router} from '@angular/router';
 import {HttpErrorResponse} from "@angular/common/http";
+import {AuthService} from "../shared/services/auth.service";
 
 @Component({
   selector: 'app-certificate',
   templateUrl: './certificate.component.html',
   styleUrls: ['./certificate.component.scss']
 })
-export class CertificateComponent implements OnInit {
+export class CertificateInfoComponent implements OnInit {
   certificate: any;
 
   constructor(
@@ -18,6 +19,7 @@ export class CertificateComponent implements OnInit {
     private certificateService: CertificateService,
     private cartService: CartService,
     private router: Router,
+    private authService: AuthService,
   ) {
   }
 
@@ -48,5 +50,10 @@ export class CertificateComponent implements OnInit {
 
   addToCart(): void {
     this.cartService.addToCart(this.certificate.id);
+  }
+
+  isAdminOrManager(): boolean {
+    const userRoles = this.authService.getUserRoles();
+    return userRoles.includes('admin') || userRoles.includes('manager');
   }
 }

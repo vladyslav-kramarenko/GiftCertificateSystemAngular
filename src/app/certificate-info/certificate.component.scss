@@ -1,8 +1,32 @@
 @import "src/styles/variables";
-main{
+
+main {
   display: flex;
 }
+
 .certificate-info-section {
+  .section-header {
+    .section-title {
+      font-size: x-large;
+      width: 100%;
+    }
+
+    .edit-icon {
+      padding: 5px;
+      cursor: pointer;
+      &:hover {
+        transform: scale(1.2);
+      }
+
+      &:active {
+        transform: scale(0.9);
+      }
+    }
+
+    display: flex;
+    justify-content: space-between;
+  }
+
   .certificate-form {
     .image-description-wrapper {
       display: flex;
@@ -53,7 +77,7 @@ main{
     margin-top: 10px;
 
     .action-text {
-      padding-top:5px;
+      padding-top: 5px;
       margin-left: 5px;
       margin-right: 5px;
       width: 100%;
@@ -65,6 +89,7 @@ main{
       min-width: 110px;
       background-color: $primary-color;
     }
+
     .favorite-icon {
     }
   }
