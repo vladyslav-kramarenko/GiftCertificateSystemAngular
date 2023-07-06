@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -14,35 +15,38 @@ import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 
 import { CertificatesComponent } from './certificates/certificates.component';
-import { CertificateComponent } from './certificate/certificate.component';
+import { CertificateInfoComponent } from './certificate-info/certificate.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { AppComponent } from './app.component';
 import { CartComponent } from './cart/cart.component';
 import { FavoritesComponent } from './favorites/favorites.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { CertificateEditComponent } from './certificate-edit/certificate-edit.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    CartComponent,
+    CertificateEditComponent,
+    CertificateInfoComponent,
     CertificatesComponent,
-    CertificateComponent,
     ErrorPageComponent,
     FavoritesComponent,
     CheckoutComponent,
+    CartComponent,
+    AppComponent,
   ],
   imports: [
-    BrowserModule,
     BrowserAnimationsModule,
-    MatInputModule,
+    ReactiveFormsModule,
+    MatSnackBarModule,
+    AppRoutingModule,
     MatButtonModule,
+    MatInputModule,
+    BrowserModule,
     MatCardModule,
     MatIconModule,
-    MatSnackBarModule,
-    AuthModule,
-    AppRoutingModule,
     SharedModule,
     FormsModule,
+    AuthModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
