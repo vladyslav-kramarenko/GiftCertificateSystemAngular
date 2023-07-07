@@ -12,17 +12,18 @@ import {FavoritesComponent} from './favorites/favorites.component';
 import {CheckoutComponent} from './checkout/checkout.component';
 import {LoginComponent} from './auth/login/login.component';
 import {CartComponent} from './cart/cart.component';
-import {AuthGuard} from "./shared/services/auth-guard.service";
+import {AuthGuard} from "./shared/guards/auth-guard";
+import {RoleGuard} from "./shared/guards/role-guard";
 
 const routes: Routes = [
   {path: 'error/:errorCode/:errorMessage', component: ErrorPageComponent},
-  {path: 'certificates/new', component: CertificateEditComponent, canActivate: [AuthGuard]},
-  {path: 'certificates/edit/:id', component: CertificateEditComponent, canActivate: [AuthGuard]},
+  {path: 'certificates/new', component: CertificateEditComponent, canActivate: [RoleGuard], data: { roles: ['admin', 'manager']}},
+  {path: 'certificates/edit/:id', component: CertificateEditComponent, canActivate: [RoleGuard], data: { roles: ['admin', 'manager']}},
   {path: 'certificates/:id', component: CertificateInfoComponent},
-  {path: 'users/:id/orders', component: UserOrdersComponent},
+  {path: 'users/:id/orders', component: UserOrdersComponent,canActivate: [AuthGuard]},
   {path: 'favorites', component: FavoritesComponent},
   {path: 'home', component: CertificatesComponent},
-  {path: 'checkout', component: CheckoutComponent},
+  {path: 'checkout', component: CheckoutComponent,canActivate: [AuthGuard]},
   {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
   {path: 'cart', component: CartComponent},
@@ -33,7 +34,7 @@ const routes: Routes = [
   declarations: [],
   imports: [CommonModule, RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [AuthGuard]
+  providers: [AuthGuard, RoleGuard]
 })
 export class AppRoutingModule {
 }
