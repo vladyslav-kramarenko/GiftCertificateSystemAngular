@@ -52,8 +52,7 @@ export class CertificateInfoComponent implements OnInit {
     this.cartService.addToCart(this.certificate.id);
   }
 
-  isAdminOrManager(): boolean {
-    const userRoles = this.authService.getUserRoles();
-    return userRoles.includes('admin') || userRoles.includes('manager');
+  isManagerOrAdmin(): boolean {
+    return this.authService.isManagerOrAdmin();
   }
 }

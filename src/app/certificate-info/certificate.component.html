@@ -4,7 +4,7 @@
       <span class="section-title ">{{ certificate.name }}</span>
       <span class="edit-icon material-symbols-outlined"
             routerLink="/certificates/edit/{{certificate.id}}"
-            *ngIf="isAdminOrManager()">
+            *ngIf="isManagerOrAdmin()">
         edit
       </span>
     </div>
