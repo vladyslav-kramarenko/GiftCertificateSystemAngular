@@ -1,9 +1,9 @@
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {SearchService} from "../services/SearchService";
 import {AuthService} from '../services/auth.service';
 import {Subject, Subscription} from 'rxjs';
-import {Router} from '@angular/router';
+import {NavigationStart, Router} from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -17,9 +17,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userId: number | null = null;
 
   constructor(
-    private searchService: SearchService,
     public authService: AuthService,
+    private searchService: SearchService,
     private router: Router,
+    private eRef: ElementRef,
   ) {
   }
 
@@ -30,12 +31,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
         debounceTime(500),
         distinctUntilChanged()  // ignore if next search term is same as previous
       )
-        .subscribe(search => this.searchService.setSearchTerm(search))
+        .subscribe(search => this.searchService.setSearchTerm(search)),
+      this.router.events.subscribe(event => {
+        if (event instanceof NavigationStart) {
+          this.dropdownVisible = false;
+        }
+      })
     );
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickout(event: Event) {
+    if(!this.eRef.nativeElement.contains(event.target)) {
+      this.dropdownVisible = false;
+    }
   }
 
   onSearchTermChange(event: any): void {

@@ -6,7 +6,7 @@
         <span class="material-symbols-outlined hamburger-icon icon" (click)="dropdownVisible = !dropdownVisible">
             menu
           </span>
-        <div class="dropdown-content" [class.show]="dropdownVisible">
+        <div class="dropdown-content shadow-border" [class.show]="dropdownVisible">
           <a routerLink="certificates/new">Create new Certificate</a>
           <a [routerLink]="'users/' + userId + '/orders'">My orders</a>
         </div>
