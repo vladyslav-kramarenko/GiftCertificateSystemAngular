@@ -2,7 +2,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Component, ElementRef, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {SearchService} from "../services/SearchService";
 import {AuthService} from '../services/auth.service';
-import {Subject, Subscription} from 'rxjs';
+import {Observable, Subject, Subscription} from 'rxjs';
 import {NavigationStart, Router} from '@angular/router';
 
 @Component({
@@ -46,7 +46,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   @HostListener('document:click', ['$event'])
   clickout(event: Event) {
-    if(!this.eRef.nativeElement.contains(event.target)) {
+    if (!this.eRef.nativeElement.contains(event.target)) {
       this.dropdownVisible = false;
     }
   }
@@ -62,5 +62,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   loadUserId(): void {
     this.userId = this.authService.getUserId();
+  }
+
+  isManagerOrAdmin(): boolean {
+    return this.authService.isManagerOrAdmin();
+  }
+
+  isAuthorized(): Observable<boolean> {
+    return this.authService.isLoggedIn();
   }
 }

@@ -2,12 +2,12 @@
   <div class="d-flex justify-content-between align-items-center">
     <div class="d-flex align-items-center">
 
-      <div class="dropdown">
+      <div class="dropdown" *ngIf="(isAuthorized() | async)">
         <span class="material-symbols-outlined hamburger-icon icon" (click)="dropdownVisible = !dropdownVisible">
             menu
           </span>
         <div class="dropdown-content shadow-border" [class.show]="dropdownVisible">
-          <a routerLink="certificates/new">Create new Certificate</a>
+          <a *ngIf="isManagerOrAdmin()" routerLink="certificates/new">Create new Certificate</a>
           <a [routerLink]="'users/' + userId + '/orders'">My orders</a>
         </div>
       </div>
@@ -20,26 +20,36 @@
       </a>
 
     </div>
+
     <div class="w-30">
-      <input type="text" class="form-control" placeholder="Search..." name="search"
+      <input class="form-control" type="text" placeholder="Search..." name="search"
              (input)="onSearchTermChange($event)">
     </div>
+
     <div class="d-flex align-items-center">
-                  <span class="material-symbols-outlined favorites-icon icon" routerLink="/favorites">
-                      favorite
-                  </span>
-      <span class="material-symbols-outlined cart-icon icon" routerLink="/cart">
+
+      <span class="material-symbols-outlined favorites-icon icon"
+            routerLink="/favorites">
+        favorite
+      </span>
+      <span class="material-symbols-outlined cart-icon icon"
+            routerLink="/cart">
                       shopping_cart
                   </span>
+
       <div class="login-signup">
-        <span *ngIf="!authService.isLoggedIn()" class="material-symbols-outlined icon" routerLink="/login">
+        <span class="material-symbols-outlined icon"
+              *ngIf="!authService.isLoggedIn()"
+              routerLink="/login">
             login
         </span>
-        <span *ngIf="authService.isLoggedIn()"
-              (click)="onLogoutClick()" class="icon  logout-icon material-symbols-outlined">
+        <span class="icon  logout-icon material-symbols-outlined"
+              *ngIf="authService.isLoggedIn()"
+              (click)="onLogoutClick()">
           logout
         </span>
       </div>
+
     </div>
   </div>
 </header>
