@@ -1,16 +1,21 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
-import {catchError, Observable, tap, throwError} from "rxjs";
+import {BehaviorSubject, catchError, Observable, of, tap, throwError} from "rxjs";
 import {environment} from '../../../environments/environment';
 import {User} from '../models/IUser';
 import jwt_decode from "jwt-decode";
 import {Router} from '@angular/router';
 import {PreviousRouteService} from "./previous-route.service";
+import {map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  private isLoggedInSubject = new BehaviorSubject<boolean>(this.hasToken());
+  isLoggedIn$ = this.isLoggedInSubject.asObservable();
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -28,6 +33,7 @@ export class AuthService {
       tap((token: string) => {
         console.log("Obtain a token:" + token);
         localStorage.setItem('authToken', token);
+        this.isLoggedInSubject.next(true);
       })
     );
   }
@@ -47,12 +53,51 @@ export class AuthService {
     );
   }
 
-  isLoggedIn(): boolean {
+  hasToken(): boolean {
+    console.log("auth service - hasToken()");
     return !!localStorage.getItem('authToken');
+  }
+
+  isLoggedIn(): Observable<boolean> {
+    return this.isLoggedIn$;
+  }
+
+  isManagerOrAdmin(): boolean {
+    return this.isManager() || this.isAdmin();
+  }
+
+  isManager(): boolean {
+    const roles = this.getUserRoles();
+    return roles.includes('manager');
+  }
+
+  isAdmin(): boolean {
+    const roles = this.getUserRoles();
+    return roles.includes('admin');
   }
 
   logout(): void {
     localStorage.removeItem('authToken');
+    this.isLoggedInSubject.next(false);
+  }
+
+  validateToken(): Observable<boolean> {
+    console.log("auth service - validateToken()");
+    const url = `${environment.API_URL}/validate-token`;
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('authToken'));
+    return this.http.get(url, {headers})
+      .pipe(
+        map(() => {
+          console.log("Token is valid");
+          this.isLoggedInSubject.next(true);
+          return true;
+        }),
+        catchError(() => {
+          console.log("Token is invalid");
+          this.isLoggedInSubject.next(false);
+          return of(false);
+        })
+      );
   }
 
   getUserId(): number | null {
@@ -73,6 +118,7 @@ export class AuthService {
   }
 
   getUserRoles(): string[] {
+    console.log("auth service - getUserRoles()");
     const token = localStorage.getItem('authToken');
     if (!token) {
       return [];
