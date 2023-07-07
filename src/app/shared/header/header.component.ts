@@ -53,6 +53,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onSearchTermChange(event: any): void {
     this.searchTerm.next(event.target.value);
+    this.router.navigate(['/home']);
   }
 
   onLogoutClick() {
