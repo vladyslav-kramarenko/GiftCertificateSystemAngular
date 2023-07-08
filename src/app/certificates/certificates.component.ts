@@ -5,6 +5,8 @@ import {Subject, Subscription} from 'rxjs';
 import {throttleTime} from 'rxjs/operators';
 import {SearchService} from '../shared/services/SearchService';
 import {Certificate} from "../shared/models/ICertificate";
+import {Tag} from "../shared/models/ITag";
+import {TagService} from "../shared/services/tag.service";
 
 @Component({
   selector: 'app-certificates',
@@ -13,6 +15,7 @@ import {Certificate} from "../shared/models/ICertificate";
 })
 export class CertificatesComponent implements OnInit {
   certificates: any = [];
+  popularTags: Tag[] = [];
   loading = false;
   allLoaded = false;
   page = 0;
@@ -31,7 +34,8 @@ export class CertificatesComponent implements OnInit {
   constructor(
     private certificateService: CertificateService,
     private cartService: CartService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private tagService: TagService
   ) {
   }
 
@@ -45,11 +49,19 @@ export class CertificatesComponent implements OnInit {
       this.errorMessage = errorMessage;
     });
 
+    this.tagService.getPopularTags(5).subscribe(tags => {
+      this.popularTags = tags;
+    });
+
     this.scrollSubscription = this.scrollSubject.pipe(
       throttleTime(200)
     ).subscribe(() => {
       this.loadMoreResults(10);
     });
+  }
+
+  onTagClick(tagName: string): void {
+    this.searchService.setSearchTerm(tagName);
   }
 
   loadMoreResults(size: number) {
