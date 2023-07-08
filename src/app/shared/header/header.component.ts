@@ -1,8 +1,7 @@
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Component, ElementRef, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {SearchService} from "../services/SearchService";
 import {AuthService} from '../services/auth.service';
-import {Observable, Subject, Subscription} from 'rxjs';
+import {Observable,  Subscription} from 'rxjs';
 import {NavigationStart, Router} from '@angular/router';
 
 @Component({
@@ -11,7 +10,7 @@ import {NavigationStart, Router} from '@angular/router';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  private searchTerm = new Subject<string>();
+  searchTerm: string = '';
   private subscriptions: Subscription[] = [];
   dropdownVisible = false;
   userId: number | null = null;
@@ -26,12 +25,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadUserId();
+
     this.subscriptions.push(
-      this.searchTerm.pipe(
-        debounceTime(500),
-        distinctUntilChanged()  // ignore if next search term is same as previous
-      )
-        .subscribe(search => this.searchService.setSearchTerm(search)),
+      this.searchService.searchTerm$.subscribe(term => {
+        this.searchTerm = term;
+      }),
       this.router.events.subscribe(event => {
         if (event instanceof NavigationStart) {
           this.dropdownVisible = false;
@@ -51,8 +49,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSearchTermChange(event: any): void {
-    this.searchTerm.next(event.target.value);
+  onSearchTermChange(): void {
+    this.searchService.setSearchTerm(this.searchTerm);
     this.router.navigate(['/home']);
   }
 
