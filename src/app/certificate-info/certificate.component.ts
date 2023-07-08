@@ -5,6 +5,7 @@ import {CartService} from "../shared/services/cart.service";
 import {Router} from '@angular/router';
 import {HttpErrorResponse} from "@angular/common/http";
 import {AuthService} from "../shared/services/auth.service";
+import {SearchService} from '../shared/services/SearchService';
 
 @Component({
   selector: 'app-certificate',
@@ -18,6 +19,7 @@ export class CertificateInfoComponent implements OnInit {
     private route: ActivatedRoute,
     private certificateService: CertificateService,
     private cartService: CartService,
+    private searchService: SearchService,
     private router: Router,
     private authService: AuthService,
   ) {
@@ -54,5 +56,10 @@ export class CertificateInfoComponent implements OnInit {
 
   isManagerOrAdmin(): boolean {
     return this.authService.isManagerOrAdmin();
+  }
+
+  onTagClick(tagName: string): void {
+    this.searchService.setSearchTerm(tagName);
+    this.router.navigate(['/home']);
   }
 }

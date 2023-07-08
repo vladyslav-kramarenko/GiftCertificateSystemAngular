@@ -19,7 +19,7 @@
       <div class="tags">
         <H4>Categories</H4>
         <div class="tag-list">
-          <label *ngFor="let tag of certificate.tags">{{ tag.name }}</label>
+          <label *ngFor="let tag of certificate.tags" (click)="onTagClick(tag.name)">{{ tag.name }}</label>
         </div>
       </div>
     </div>
