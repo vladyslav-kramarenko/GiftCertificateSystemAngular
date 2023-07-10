@@ -7,6 +7,9 @@ import {Tag} from '../shared/models/ITag';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmDialogComponent} from "../shared/confirm-dialog/confirm-dialog.component";
+import {ImageService} from "../shared/services/image.service";
+import {finalize} from 'rxjs/operators';
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-certificate-edit',
@@ -22,6 +25,7 @@ export class CertificateEditComponent implements OnInit {
   tags: Tag[] = [];
   newTag: string = '';
   isNew: boolean;
+  imagePreview = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,7 +33,8 @@ export class CertificateEditComponent implements OnInit {
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private imageService: ImageService
   ) {
     this.editForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -64,6 +69,7 @@ export class CertificateEditComponent implements OnInit {
           img: this.certificate.img,
           tags: this.tags.map(tag => tag.name).join(', ')
         });
+        this.imagePreview = this.certificate.img || environment.default_certificate_image;
       });
     }
   }
@@ -71,7 +77,9 @@ export class CertificateEditComponent implements OnInit {
   onFormSubmit(): void {
     let formData: Certificate = this.editForm.value;
     formData.tags = this.tags;
-    if (!formData.img) formData.img = "";
+
+    formData.img = this.certificate.img;
+
     if (this.isNew) {
       this.certificateService.createCertificate(formData).subscribe((response) => {
         const newCertificate: Certificate = response.body;
@@ -120,6 +128,36 @@ export class CertificateEditComponent implements OnInit {
       this.editForm.controls['tags'].setValue(this.tags.map(tag => tag.name).join(', '));
     }
   }
+
+  onFileChange(event: Event): void {
+    const files = (event.target as HTMLInputElement).files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      this.imageService.uploadImage(file)
+        .pipe(finalize(() => {
+          this.editForm.controls['img'].setValue(this.certificate.img);
+        }))
+        .subscribe(data => {
+          // Assuming your endpoint returns the saved file name or path
+          this.certificate.img = data.filename || data.path;
+          console.log("this.certificate.img="+this.certificate.img);
+
+          const reader = new FileReader();
+          reader.onload = e => {
+            if (typeof reader.result === 'string' && reader.result.length > 0) {
+              this.imagePreview = reader.result;
+            } else {
+              this.imagePreview = environment.default_certificate_image;
+            }
+            console.log("imagePreview:" + this.imagePreview);
+          };
+          reader.readAsDataURL(file);
+        }, error => {
+          console.error('Error uploading file', error);
+        });
+    }
+  }
+
 
   removeTag(index: number): void {
     this.tags.splice(index, 1);

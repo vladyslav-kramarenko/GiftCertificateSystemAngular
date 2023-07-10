@@ -5,22 +5,32 @@
       <div class="row">
         <div class="col-12">
           <form [formGroup]="editForm" (ngSubmit)="onFormSubmit()">
-            <div class="mb-3">
-              <label for="certificate-name" class="form-label">Certificate Name</label>
-              <input type="text" formControlName="name" class="form-control" id="certificate-name"
-                     placeholder="Certificate Name">
+            <div class="row">
+              <div class="name-and-path-wrapper col-md-6">
+                <div class="mb-3">
+                  <label for="certificate-name" class="form-label">Certificate Name</label>
+                  <input type="text" formControlName="name" class="form-control" id="certificate-name"
+                         placeholder="Certificate Name">
+                </div>
+                <div class="mb-3">
+                  <label for="certificate-image" class="form-label">Certificate Image</label>
+                  <input type="file" formControlName="img" class="form-control" id="certificate-image" accept="image/*"
+                         (change)="onFileChange($event)">
+                </div>
+              </div>
+              <div class="image-wrapper d-flex align-items-center justify-content-center col-md-6">
+                <img class="h-100 object-fit-cover" [src]="imagePreview" alt="Image preview">
+              </div>
+
             </div>
-            <div class="mb-3">
-              <label for="certificate-image" class="form-label">Certificate Image</label>
-              <input type="file" formControlName="img" class="form-control" id="certificate-image" accept="image/*">
-            </div>
-            <div class="price-and-valid-section flex-row justify-content-between">
-              <span class="mb-3">
+
+            <div class="price-and-valid-section row">
+              <span class="col-md-6">
               <label for="certificate-price" class="form-label">Price ($)</label>
               <input type="text" formControlName="price" class="form-control" id="certificate-price"
                      placeholder="Price">
               </span>
-              <span class="mb-3">
+              <span class="col-md-6">
               <label for="certificate-validity" class="form-label">Valid for (days)</label>
               <input type="number" formControlName="duration" class="form-control" id="certificate-validity"
                      placeholder="Duration in days"
@@ -52,8 +62,8 @@
             </div>
             <div class="actions d-grid gap-2 d-md-flex justify-content-md-end">
               <button class="btn btn-secondary me-md-2"
-                [routerLink]="['/certificates', this.certificate.id]"
-                type="button">
+                      [routerLink]="['/certificates', this.certificate.id]"
+                      type="button">
                 Back
               </button>
               <button class="btn btn-danger del-btn" type="button" (click)="deleteCertificate()">
