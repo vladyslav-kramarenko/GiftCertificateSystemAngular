@@ -29,11 +29,9 @@ export class CertificateService {
     Observable<any> {
     const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-    console.log(`token: ` + token);
     console.log(`id: ${id}`);
     console.log(`certificate:`, data);
     const url = `${environment.API_URL}/certificates/${id}`;
-    console.log("url: " + url)
     return this.http.put<any>(url, data, {headers})
       .pipe(
         catchError(this.handleError)
