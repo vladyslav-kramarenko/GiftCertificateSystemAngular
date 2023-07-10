@@ -10,7 +10,7 @@
     </div>
     <div class="certificate-form">
       <div class="image-description-wrapper flex-column flex-md-row">
-        <img [src]="certificate.img ? certificate.img :'assets/coupon.png' " alt="Certificate Image">
+        <img [src]="certificate.img ? certificate.img :defaultCertificateImage" alt="Certificate Image">
         <div class="description-section flex-column">
           <label>Description</label>
           <p class="description">{{ certificate.description }}</p>

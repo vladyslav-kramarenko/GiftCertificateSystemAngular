@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {HttpErrorResponse} from "@angular/common/http";
 import {AuthService} from "../shared/services/auth.service";
 import {SearchService} from '../shared/services/SearchService';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-certificate',
@@ -14,7 +15,7 @@ import {SearchService} from '../shared/services/SearchService';
 })
 export class CertificateInfoComponent implements OnInit {
   certificate: any;
-
+  defaultCertificateImage = environment.default_certificate_image;
   constructor(
     private route: ActivatedRoute,
     private certificateService: CertificateService,
