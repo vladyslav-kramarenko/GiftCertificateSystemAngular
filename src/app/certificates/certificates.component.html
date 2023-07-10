@@ -36,14 +36,16 @@
     </div>
   </div>
 
-  <div class="favorites certificate-container">
+  <div class="certificate-container">
     <div *ngFor="let certificate of certificates" class="certificate-tile d-flex flex-column">
-      <img [src]="certificate.img ? certificate.img :'assets/coupon.png' "
+      <div class="image-container">
+      <img [src]="certificate.certificateImage"
            alt="Certificate Image"
            (mousedown)="onTileMouseDown($event)"
            (mouseup)="onTileMouseUp($event)"
            routerLink="/certificates/{{ certificate.id }}"
       >
+      </div>
       <h5 class="certificate-card-header d-flex  justify-content-between"
           (mousedown)="onTileMouseDown($event)"
           (mouseup)="onTileMouseUp($event)"
@@ -61,6 +63,7 @@
       </div>
     </div>
   </div>
+
   <div *ngIf="!errorMessage" class="load-more-btn text-center">
     <button class="btn btn-primary" (click)="loadMoreResults(20)">Load More Certificates</button>
   </div>

@@ -7,6 +7,8 @@ import {SearchService} from '../shared/services/SearchService';
 import {Certificate} from "../shared/models/ICertificate";
 import {Tag} from "../shared/models/ITag";
 import {TagService} from "../shared/services/tag.service";
+import {environment} from "../../environments/environment";
+import {ImageService} from "../shared/services/image.service";
 
 @Component({
   selector: 'app-certificates',
@@ -35,6 +37,7 @@ export class CertificatesComponent implements OnInit {
     private certificateService: CertificateService,
     private cartService: CartService,
     private searchService: SearchService,
+    private imageService: ImageService,
     private tagService: TagService
   ) {
   }
@@ -82,6 +85,20 @@ export class CertificatesComponent implements OnInit {
           console.log('No certificates found');
           this.errorMessage = "No certificates found";
         } else {
+
+          certificates.forEach((certificate: Certificate) => {
+            if (certificate.img) {
+              console.log("certificate.img = "+certificate.img);
+              this.imageService.getImage(certificate.img).subscribe((data: Blob) => {
+                const urlCreator = window.URL || window.webkitURL;
+                // Store the image in the certificate object
+                certificate.certificateImage = urlCreator.createObjectURL(data);
+              });
+            } else {
+              certificate.certificateImage = environment.default_certificate_image;
+            }
+          });
+
           this.certificates = this.certificates.concat(certificates);
           console.log('found '+certificates.length+" certificates");
           this.page++;

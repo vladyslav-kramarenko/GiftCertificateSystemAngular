@@ -8,7 +8,6 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmDialogComponent} from "../shared/confirm-dialog/confirm-dialog.component";
 import {ImageService} from "../shared/services/image.service";
-import {finalize} from 'rxjs/operators';
 import {environment} from "../../environments/environment";
 
 @Component({
@@ -26,6 +25,7 @@ export class CertificateEditComponent implements OnInit {
   newTag: string = '';
   isNew: boolean;
   imagePreview = '';
+  selectedFile: File | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -58,18 +58,28 @@ export class CertificateEditComponent implements OnInit {
       tags: new FormControl(''),
     });
     if (!this.isNew) {
-      this.certificateService.getCertificate(this.certificate.id).subscribe((data: Certificate) => {
-        this.certificate = data;
+      this.certificateService.getCertificate(this.certificate.id).subscribe((loadedCertificate: Certificate) => {
+        this.certificate = loadedCertificate;
         this.tags = this.certificate.tags;
         this.editForm.patchValue({
           name: this.certificate.name,
           description: this.certificate.description,
           price: this.certificate.price,
           duration: this.certificate.duration,
-          img: this.certificate.img,
           tags: this.tags.map(tag => tag.name).join(', ')
         });
-        this.imagePreview = this.certificate.img || environment.default_certificate_image;
+
+        if (this.certificate.img) {
+          console.log("this.certificate.img = "+this.certificate.img)
+          this.imageService.getImage(this.certificate.img).subscribe((data: Blob) => {
+            const urlCreator = window.URL || window.webkitURL;
+            console.log("urlCreator = "+urlCreator);
+            this.imagePreview = urlCreator.createObjectURL(data);
+          });
+        } else {
+          console.log("this.certificate.img is null");
+          this.imagePreview = environment.default_certificate_image;
+        }
       });
     }
   }
@@ -78,11 +88,30 @@ export class CertificateEditComponent implements OnInit {
     let formData: Certificate = this.editForm.value;
     formData.tags = this.tags;
 
-    formData.img = this.certificate.img;
+    if (this.selectedFile) {
+      this.imageService.uploadImage(this.selectedFile).subscribe({
+        next: imagePath => {
+          this.certificate.img = imagePath;
+          formData.img = imagePath;
+          this.uploadCertificate(formData);
+        },
+        error: error => {
+          console.error('Error uploading file', error);
+        }
+      });
+    } else {
+      this.uploadCertificate(formData);
+    }
+  }
+
+  uploadCertificate(formData: Certificate): void {
 
     if (this.isNew) {
       this.certificateService.createCertificate(formData).subscribe((response) => {
         const newCertificate: Certificate = response.body;
+        this.snackBar.open('Certificate was created!', 'Close', {
+          duration: 2000,
+        });
         this.router.navigate(['/certificates', newCertificate.id]);
       });
     } else {
@@ -91,7 +120,6 @@ export class CertificateEditComponent implements OnInit {
           duration: 2000,
         });
         this.router.navigate(['/certificates', this.certificate.id]);
-
       });
     }
   }
@@ -132,32 +160,19 @@ export class CertificateEditComponent implements OnInit {
   onFileChange(event: Event): void {
     const files = (event.target as HTMLInputElement).files;
     if (files && files.length > 0) {
-      const file = files[0];
-      this.imageService.uploadImage(file)
-        .pipe(finalize(() => {
-          this.editForm.controls['img'].setValue(this.certificate.img);
-        }))
-        .subscribe(data => {
-          // Assuming your endpoint returns the saved file name or path
-          this.certificate.img = data.filename || data.path;
-          console.log("this.certificate.img="+this.certificate.img);
+      this.selectedFile = files[0];
 
-          const reader = new FileReader();
-          reader.onload = e => {
-            if (typeof reader.result === 'string' && reader.result.length > 0) {
-              this.imagePreview = reader.result;
-            } else {
-              this.imagePreview = environment.default_certificate_image;
-            }
-            console.log("imagePreview:" + this.imagePreview);
-          };
-          reader.readAsDataURL(file);
-        }, error => {
-          console.error('Error uploading file', error);
-        });
+      const reader = new FileReader();
+      reader.onload = e => {
+        if (typeof reader.result === 'string' && reader.result.length > 0) {
+          this.imagePreview = reader.result;
+        } else {
+          this.imagePreview = environment.default_certificate_image;
+        }
+      };
+      reader.readAsDataURL(this.selectedFile);
     }
   }
-
 
   removeTag(index: number): void {
     this.tags.splice(index, 1);

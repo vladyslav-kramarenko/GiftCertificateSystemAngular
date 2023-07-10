@@ -2,6 +2,7 @@
 
 .popular-tag {
   cursor: pointer;
+
   &:hover {
     transform: scale(1.05);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
@@ -10,9 +11,10 @@
   &:active {
     transform: scale(0.9);
   }
+
   @media (max-width: 768px) {
-   max-height: 30px;
-    padding:4px;
+    max-height: 30px;
+    padding: 4px;
   }
 }
 
@@ -73,77 +75,72 @@ p, .certificate-name, .description {
   margin: 0;
 }
 
-.certificate-tile {
-  cursor: pointer;
-  border: 1px solid #000;
-  border-radius: 5px;
-  padding: 10px;
-  margin: 10px;
-  align-items: center;
-  justify-content: space-between;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-
-  &:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  }
-
-  img {
-    align-self: center;
-    alignment: center;
-    max-width: 70%;
-  }
-
-  .actions {
-    margin-top: auto;
-    width: 100%;
-  }
-
-  .actions span {
-    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
-  }
-
-  .actions span:hover {
-    transform: scale(1.2);
-    color: darkgreen;
-  }
-
-  .actions span:active {
-    transform: scale(0.9);
-  }
-}
-
-.certificate-tile.clicked {
-  transform: scale(0.9);
-}
-
 .certificate-container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 10px;
-}
 
-@media screen and (max-width: 1200px) {
-  .certificate-container {
+  @media screen and (max-width: 1200px) {
     grid-template-columns: repeat(4, 1fr);
   }
-}
-
-@media screen and (max-width: 992px) {
-  .certificate-container {
+  @media screen and (max-width: 992px) {
     grid-template-columns: repeat(3, 1fr);
   }
-}
-
-@media screen and (max-width: 768px) {
-  .certificate-container {
+  @media screen and (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
   }
-}
-
-@media screen and (max-width: 576px) {
-  .certificate-container {
+  @media screen and (max-width: 576px) {
     grid-template-columns: repeat(1, 1fr);
+  }
+
+  .certificate-tile {
+    cursor: pointer;
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    &.clicked{
+      transform: scale(0.9);
+    }
+
+    .image-container {
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+    }
+
+    img {
+      align-self: center;
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+
+    .actions {
+      margin-top: auto;
+      width: 100%;
+    }
+
+    .actions span {
+      transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+    }
+
+    .actions span:hover {
+      transform: scale(1.2);
+      color: darkgreen;
+    }
+
+    .actions span:active {
+      transform: scale(0.9);
+    }
   }
 }
 
