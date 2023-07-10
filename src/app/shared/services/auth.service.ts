@@ -118,7 +118,6 @@ export class AuthService {
   }
 
   getUserRoles(): string[] {
-    console.log("auth service - getUserRoles()");
     const token = localStorage.getItem('authToken');
     if (!token) {
       return [];
