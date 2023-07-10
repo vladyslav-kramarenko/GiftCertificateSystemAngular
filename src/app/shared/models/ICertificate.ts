@@ -11,4 +11,5 @@ export interface Certificate {
   img: string | null;
   tags: Tag[];
   _links: any;
+  certificateImage:any|null
 }
