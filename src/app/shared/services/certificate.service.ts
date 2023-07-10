@@ -50,22 +50,6 @@ export class CertificateService {
       );
   }
 
-  getCertificates(page: number, size: number):
-    Observable<any> {
-    let params = new HttpParams();
-    params = params.append('page', page.toString());
-    params = params.append('size', size.toString());
-    const url = `${environment.API_URL}/certificates`;
-
-    return this.http.get<CertificateResponse>(url, {params: params})
-      .pipe(
-        map(response => {
-          return response._embedded.singleGiftCertificateDTOList;
-        }),
-        catchError(this.handleError)
-      );
-  }
-
   deleteCertificate(id: number): Observable<any> {
     const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
