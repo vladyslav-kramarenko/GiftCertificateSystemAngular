@@ -51,7 +51,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onSearchTermChange(): void {
     this.searchService.setSearchTerm(this.searchTerm);
-    this.router.navigate(['/home']);
+    this.router.navigate(['/']);
   }
 
   onLogoutClick() {
@@ -69,5 +69,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   isAuthorized(): Observable<boolean> {
     return this.authService.isLoggedIn();
+  }
+
+  goHome(){
+    this.router.navigate(['/']);
+    this.searchService.setSearchTerm("");
   }
 }

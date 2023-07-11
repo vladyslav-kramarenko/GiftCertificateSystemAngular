@@ -12,11 +12,11 @@
         </div>
       </div>
 
-      <a routerLink="/home" class="mobile-logo">
-        <img class="ml-3 header-logo" src="assets/JoyCardLogo.png" alt="Joy Card">
+      <a class="mobile-logo">
+        <img class="ml-3 header-logo" (click)="goHome()" src="assets/JoyCardLogo.png" alt="Joy Card">
       </a>
-      <a routerLink="/home" class="desktop-logo">
-        <img class="ml-3 header-logo" src="assets/JoyCardLogoHorizontal.png" alt="Joy Card">
+      <a class="desktop-logo">
+        <img class="ml-3 header-logo" (click)="goHome()" src="assets/JoyCardLogoHorizontal.png" alt="Joy Card">
       </a>
 
     </div>
