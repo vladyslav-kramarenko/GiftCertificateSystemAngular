@@ -81,6 +81,8 @@ export class CertificateEditComponent implements OnInit {
           this.imagePreview = environment.default_certificate_image;
         }
       });
+    }else{
+      this.imagePreview = environment.default_certificate_image;
     }
   }
 
