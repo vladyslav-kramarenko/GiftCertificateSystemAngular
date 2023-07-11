@@ -5,7 +5,8 @@
         <h3>Popular<br>Categories</h3>
       </div>
       <div class="d-flex flex-wrap justify-content-center w-100">
-        <div *ngFor="let tag of popularTags" (click)="onTagClick(tag.name)" class="p-1 p-md-3 m-2 bg-light border rounded popular-tag">
+        <div *ngFor="let tag of popularTags" (click)="onTagClick(tag.name)"
+             class="p-1 p-md-3 m-2 bg-light border rounded popular-tag">
           {{ tag.name }}
         </div>
       </div>
@@ -39,12 +40,12 @@
   <div class="certificate-container">
     <div *ngFor="let certificate of certificates" class="certificate-tile d-flex flex-column">
       <div class="image-container">
-      <img [src]="certificate.certificateImage"
-           alt="Certificate Image"
-           (mousedown)="onTileMouseDown($event)"
-           (mouseup)="onTileMouseUp($event)"
-           routerLink="/certificates/{{ certificate.id }}"
-      >
+        <img [src]="certificate.certificateImage"
+             alt="Certificate Image"
+             (mousedown)="onTileMouseDown($event)"
+             (mouseup)="onTileMouseUp($event)"
+             routerLink="/certificates/{{ certificate.id }}"
+        >
       </div>
       <h5 class="certificate-card-header d-flex  justify-content-between"
           (mousedown)="onTileMouseDown($event)"
@@ -63,8 +64,12 @@
       </div>
     </div>
   </div>
-
-  <div *ngIf="!errorMessage" class="load-more-btn text-center">
+  <div class="spinner" *ngIf="loading">
+    <div class="spinner-dot"></div>
+    <div class="spinner-dot"></div>
+    <div class="spinner-dot"></div>
+  </div>
+  <div *ngIf="!errorMessage && !loading" class="load-more-btn-wrapper text-center">
     <button class="btn btn-primary" (click)="loadMoreResults(20)">Load More Certificates</button>
   </div>
   <div *ngIf="errorMessage" class="error-message d-flex">

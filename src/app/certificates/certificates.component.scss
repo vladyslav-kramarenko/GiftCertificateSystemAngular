@@ -144,8 +144,11 @@ p, .certificate-name, .description {
   }
 }
 
-.load-more-btn {
+.load-more-btn-wrapper {
   padding-bottom: 10px;
+  .button{
+    background-color: $primary-color;
+  }
 }
 
 .error-message {
@@ -159,3 +162,41 @@ p, .certificate-name, .description {
   text-align: center;
   overflow: auto;
 }
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.spinner-dot {
+  background-color: $primary-color;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  margin: 0 5px;
+
+  /* Animation */
+  animation: spinner-dot 1.2s infinite;
+  animation-timing-function: linear;
+}
+
+.spinner-dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.spinner-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.spinner-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes spinner-dot {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.25); }
+  60% { transform: scale(1); }
+  100% { transform: scale(1); }
+}
+

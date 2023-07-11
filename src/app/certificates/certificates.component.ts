@@ -68,11 +68,16 @@ export class CertificatesComponent implements OnInit {
   }
 
   loadMoreResults(size: number) {
+    // console.log(`1.loading status: ${this.loading}, page: ${this.page}`);
+    if (this.loading) {
+      return;
+    }
     this.errorMessage = '';
     const sortParams = this.sortBy.split(',').map(s => s.trim());
-    console.log('loadMoreResults started');
-    console.log('size = '+size);
+    // console.log('loadMoreResults started');
+    // console.log('size = '+size);
     this.loading = true;
+    // console.log(`2.loading status: ${this.loading}, page: ${this.page}`);
     this.certificateService.searchGiftCertificates(
       this.searchTerm,
       this.page,
@@ -87,8 +92,9 @@ export class CertificatesComponent implements OnInit {
         } else {
 
           certificates.forEach((certificate: Certificate) => {
+            // console.log("certificate id = "+certificate.id);
             if (certificate.img) {
-              console.log("certificate.img = "+certificate.img);
+              // console.log("certificate.img = "+certificate.img);
               this.imageService.getImage(certificate.img).subscribe((data: Blob) => {
                 const urlCreator = window.URL || window.webkitURL;
                 // Store the image in the certificate object
@@ -100,9 +106,11 @@ export class CertificatesComponent implements OnInit {
           });
 
           this.certificates = this.certificates.concat(certificates);
-          console.log('found '+certificates.length+" certificates");
+          // console.log('found '+certificates.length+" certificates");
           this.page++;
         }
+        this.loading = false;
+        // console.log(`3.loading status: ${this.loading}, page: ${this.page}`);
       });
   }
 
