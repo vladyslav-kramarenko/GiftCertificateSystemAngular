@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
         const previousUrl = this.previousRouteService.getPreviousUrl();
         this.serverErrorMessage = '';
         if (!previousUrl) {
-          this.router.navigate(['/home']);
+          this.router.navigate(['/']);
         } else {
           this.router.navigate([previousUrl]);
         }

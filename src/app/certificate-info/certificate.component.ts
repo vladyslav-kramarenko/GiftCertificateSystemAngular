@@ -75,6 +75,6 @@ export class CertificateInfoComponent implements OnInit {
 
   onTagClick(tagName: string): void {
     this.searchService.setSearchTerm(tagName);
-    this.router.navigate(['/home']);
+    this.router.navigate(['/']);
   }
 }

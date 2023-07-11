@@ -139,7 +139,7 @@ export class CertificateEditComponent implements OnInit {
           this.snackBar.open('Certificate deleted!', 'Close', {
             duration: 2000,
           });
-          this.router.navigate(['/home']);
+          this.router.navigate(['/']);
         });
       }
     });
