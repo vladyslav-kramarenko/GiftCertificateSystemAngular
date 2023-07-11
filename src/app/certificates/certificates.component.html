@@ -27,8 +27,8 @@
     <div class="sort-section d-flex">
       <label for="sort-options">Sort By:</label>
       <select id="sort-options" [(ngModel)]="sortBy" (change)="initSearch()">
-        <option value="create_date,desc">Date: old to new</option>
-        <option value="create_date,asc">Date: new to old</option>
+        <option value="createDate,asc">Date: old to new</option>
+        <option value="createDate,desc">Date: new to old</option>
         <option value="price,asc">Price: Low to High</option>
         <option value="price,desc">Price: High to Low</option>
         <option value="name,asc">Name: A to Z</option>
