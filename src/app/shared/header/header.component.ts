@@ -1,7 +1,7 @@
 import {Component, ElementRef, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {SearchService} from "../services/SearchService";
 import {AuthService} from '../services/auth.service';
-import {Observable,  Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {NavigationStart, Router} from '@angular/router';
 
 @Component({
@@ -71,8 +71,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.authService.isLoggedIn();
   }
 
-  goHome(){
+  goHome() {
     this.router.navigate(['/']);
     this.searchService.setSearchTerm("");
+  }
+
+  onOrderPageClick() {
+    if (this.userId != null && this.userId > 0) {
+      this.router.navigate(['/users/' + this.userId + '/orders']);
+    }else{
+      this.router.navigate(['/login']);
+    }
   }
 }
