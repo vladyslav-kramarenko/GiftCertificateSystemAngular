@@ -26,6 +26,8 @@ import {FavoritesComponent} from './favorites/favorites.component';
 import {CheckoutComponent} from './checkout/checkout.component';
 import {CartComponent} from './cart/cart.component';
 import {AppComponent} from './app.component';
+import {AuthInterceptor} from "./shared/services/AuthInterceptor";
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -56,7 +58,9 @@ import {AppComponent} from './app.component';
     MatDialogModule,
     MatProgressSpinnerModule,
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {
