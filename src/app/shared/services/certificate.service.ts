@@ -1,11 +1,10 @@
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {catchError, Observable, Subject, throwError} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {environment} from "../../../environments/environment";
 import {map} from "rxjs/operators";
 import {Certificate} from "../models/ICertificate";
 import {CertificateResponse} from "../models/ICertificateResponse";
-import {AuthService} from "./auth.service";
 
 @Injectable({
   providedIn: 'root'
@@ -13,64 +12,26 @@ import {AuthService} from "./auth.service";
 export class CertificateService {
   private errorSubject = new Subject<string>();
   public error$ = this.errorSubject.asObservable();
-  constructor(
-    private http: HttpClient,
-    private authService: AuthService
-  ) {
+  private certificatesEndpoint = `${environment.API_URL}/certificates`;
+
+  constructor(private http: HttpClient) {
   }
 
-  getCertificate(id: number):
-    Observable<any> {
-    const url = `${environment.API_URL}/certificates/${id}`;
-    return this.http.get<any>(url);
+  getCertificate(id: number): Observable<any> {
+    return this.http.get<Certificate>(`${this.certificatesEndpoint}/${id}`);
   }
 
-  updateCertificate(id: number, data: any):
-    Observable<any> {
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-    console.log(`id: ${id}`);
-    console.log(`certificate:`, data);
-    const url = `${environment.API_URL}/certificates/${id}`;
-    return this.http.put<any>(url, data, {headers})
-      .pipe(
-        catchError(this.handleError)
-      );
+  updateCertificate(id: number, certificate: Certificate): Observable<Certificate> {
+    return this.http.put<Certificate>(`${this.certificatesEndpoint}/${id}`, certificate);
   }
 
-  createCertificate(data: any): Observable<any> {
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-    const url = `${environment.API_URL}/certificates`;
-    return this.http.post<any>(url, data, {headers, observe: 'response'})
-      .pipe(
-        catchError(this.handleError)
-      );
+  createCertificate(certificate: Certificate): Observable<any> {
+    return this.http.post<Certificate>(this.certificatesEndpoint, certificate, {observe: 'response'});
   }
 
   deleteCertificate(id: number): Observable<any> {
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-    const url = `${environment.API_URL}/certificates/${id}`;
-    return this.http.delete(url, {headers})
-      .pipe(
-        catchError(this.handleError)
-      );
+    return this.http.delete<void>(`${this.certificatesEndpoint}/${id}`);
   }
-
-  private handleError = (error: HttpErrorResponse) => {
-    console.log("error.status: " + error.status);
-    if (error.status === 204) {
-      console.log('Certificates not found: ' + error);
-      this.errorSubject.next('Certificates not found');
-    }
-    if (error.status === 401) this.authService.updateStatusToNotAuthorized();
-
-    console.log(error.message);
-    console.log(error);
-    return throwError(error);
-  }
-
 
   searchGiftCertificates(
     searchTerm: string,
@@ -89,14 +50,13 @@ export class CertificateService {
       .set('minPrice', minPrice)
       .set('maxPrice', maxPrice);
 
-    const url = `${environment.API_URL}/certificates/search`;
+    const url = this.certificatesEndpoint + `/search`;
     return this.http.get<CertificateResponse>(url, {params: params})
       .pipe(
         map(response => {
           if (response && response._embedded) {
             return response._embedded.singleGiftCertificateDTOList;
           } else {
-            // Return an empty array if response or response._embedded is null or undefined
             return [];
           }
         })
