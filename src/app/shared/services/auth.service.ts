@@ -7,13 +7,14 @@ import jwt_decode from "jwt-decode";
 import {Router} from '@angular/router';
 import {PreviousRouteService} from "./previous-route.service";
 import {map} from "rxjs/operators";
+import {AuthResponse} from "../models/IAuthResponse";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private isLoggedInSubject = new BehaviorSubject<boolean>(this.hasToken());
+  private isLoggedInSubject = new BehaviorSubject<boolean>(this.hasAccessToken());
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
   constructor(
@@ -29,11 +30,41 @@ export class AuthService {
     const body = new HttpParams()
       .set('email', email)
       .set('password', password);
-    return this.http.post<string>(url, body.toString(), {headers, responseType: 'text' as 'json'}).pipe(
-      tap((token: string) => {
-        console.log("Obtain a token:" + token);
-        localStorage.setItem('authToken', token);
+    return this.http.post<AuthResponse>(url, body.toString(), {headers}).pipe(
+      tap((response) => {
+        localStorage.setItem('authToken', response.accessToken);
+        localStorage.setItem('refreshToken', response.refreshToken);
         this.isLoggedInSubject.next(true);
+      })
+    );
+  }
+
+
+  refreshAccessToken() {
+    localStorage.removeItem('authToken');
+    const url = `${environment.API_URL}/auth/refresh-token`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
+    const refreshToken = this.getRefreshToken();
+
+    if (refreshToken === "") {
+      console.error('Refresh token is empty');
+      this.saveCurrentPageAndLogout();
+      return throwError('Refresh token is empty');
+    }
+
+    const body = new HttpParams().set('refreshToken', refreshToken);
+
+    return this.http.post<AuthResponse>(url, body.toString(), {headers}).pipe(
+      tap((response) => {
+        localStorage.setItem('authToken', response.accessToken);
+        localStorage.setItem('refreshToken', response.refreshToken);
+
+        this.isLoggedInSubject.next(true);
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Token refresh failed, logging out and redirecting to login page');
+        this.saveCurrentPageAndLogout();
+        return throwError(error);
       })
     );
   }
@@ -46,15 +77,18 @@ export class AuthService {
       .set('password', password)
       .set('firstName', firstName)
       .set('lastName', lastName);
-    return this.http.post(url, body.toString(), {headers}).pipe(
-      tap((response) => {
-        console.log("Obtain a response:" + response);
-      })
-    );
+    return this.http.post(url, body.toString(), {headers});
   }
 
-  hasToken(): boolean {
-    console.log("auth service - hasToken()");
+  public getAuthToken(): string {
+    return localStorage.getItem('authToken') || "";
+  }
+
+  public getRefreshToken(): string {
+    return localStorage.getItem('refreshToken') || "";
+  }
+
+  hasAccessToken(): boolean {
     return !!localStorage.getItem('authToken');
   }
 
@@ -78,17 +112,27 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('authToken');
+    this.deleteRefreshTokenFromServer();
     this.isLoggedInSubject.next(false);
+    this.router.navigate(['/login']);
+  }
+
+  deleteRefreshTokenFromServer() {
+    const refreshToken = this.getRefreshToken();
+    if (refreshToken !== "") {
+      const url = `${environment.API_URL}/auth/logout`;
+      const body = new HttpParams().set('refreshToken', refreshToken);
+      this.http.post(url, body.toString());
+    } else {
+      console.error("refreshToken is empty");
+    }
   }
 
   validateToken(): Observable<boolean> {
-    console.log("auth service - validateToken()");
-    const url = `${environment.API_URL}/validate-token`;
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('authToken'));
-    return this.http.get(url, {headers})
+    const url = `${environment.API_URL}/auth/validate-token`;
+    return this.http.get(url)
       .pipe(
         map(() => {
-          console.log("Token is valid");
           this.isLoggedInSubject.next(true);
           return true;
         }),
@@ -100,20 +144,22 @@ export class AuthService {
       );
   }
 
-  getUserId(): number | null {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-      console.log("authToken is null")
-      return null;
+  getUserId(): number {
+    const token = this.getAuthToken();
+    if (!token || token === "") {
+      console.error("authToken is null")
+      this.refreshAccessToken();
     }
 
     try {
       const decodedToken: any = jwt_decode(token);
       const userAuthority = decodedToken.roles?.find((a: string) => a.startsWith('USER_ID_'));
-      return userAuthority ? Number(userAuthority.split('_').pop()) : null;
+      const userId = Number(userAuthority.split('_').pop());
+      if (userId != null) return userId
+      return 0;
     } catch (error) {
       console.error('Error decoding token', error);
-      return null;
+      return 0;
     }
   }
 
@@ -136,19 +182,12 @@ export class AuthService {
 
   getUserDetails(id: number): Observable<User> {
     const url = `${environment.API_URL}/users/${id}`;
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-    return this.http.get<User>(url, {headers}).pipe(
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 401) this.updateStatusToNotAuthorized();
-        return throwError(error);
-      })
-    );
+    return this.http.get<User>(url);
   }
 
-  updateStatusToNotAuthorized() {
-    this.logout();
+  saveCurrentPageAndLogout() {
+    console.log("saveCurrentPageAndLogout()");
     this.previousRouteService.setPreviousUrl(this.router.url);
-    this.router.navigate(['/login']);
+    this.logout();
   }
 }
