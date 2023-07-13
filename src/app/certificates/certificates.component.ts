@@ -27,6 +27,8 @@ export class CertificatesComponent implements OnInit {
   minPrice: number = 0;
   maxPrice: number = 0;
   errorMessage: string = '';
+  noMoreCertificates = false;
+  clickedClass: string = 'clicked';
 
   private scrollSubject = new Subject();
   private scrollSubscription?: Subscription;
@@ -68,54 +70,64 @@ export class CertificatesComponent implements OnInit {
   }
 
   loadMoreResults(size: number) {
-    // console.log(`1.loading status: ${this.loading}, page: ${this.page}`);
-    if (this.loading) {
+    if (this.loading || this.noMoreCertificates) {
       return;
     }
     this.errorMessage = '';
     const sortParams = this.sortBy.split(',').map(s => s.trim());
-    // console.log('loadMoreResults started');
-    // console.log('size = '+size);
     this.loading = true;
-    // console.log(`2.loading status: ${this.loading}, page: ${this.page}`);
     this.certificateService.searchGiftCertificates(
       this.searchTerm,
       this.page,
       size || this.size,
       sortParams,
       this.minPrice || 0,
-      this.maxPrice || 0)
+      this.maxPrice || 0
+    )
       .subscribe((certificates: Certificate[]) => {
-        if (certificates === null || certificates === undefined || certificates.length === 0) {
-          console.log('No certificates found');
-          this.errorMessage = "No certificates found";
-        } else {
-
-          certificates.forEach((certificate: Certificate) => {
-            // console.log("certificate id = "+certificate.id);
-            if (certificate.img) {
-              // console.log("certificate.img = "+certificate.img);
-              this.imageService.getImage(certificate.img).subscribe((data: Blob) => {
-                const urlCreator = window.URL || window.webkitURL;
-                // Store the image in the certificate object
-                certificate.certificateImage = urlCreator.createObjectURL(data);
-              });
-            } else {
-              certificate.certificateImage = environment.default_certificate_image;
-            }
-          });
-
-          this.certificates = this.certificates.concat(certificates);
-          // console.log('found '+certificates.length+" certificates");
-          this.page++;
-        }
-        this.loading = false;
-        // console.log(`3.loading status: ${this.loading}, page: ${this.page}`);
-      });
+          if (certificates === null || certificates === undefined || certificates.length === 0) {
+            this.setNoMoreCertificatesMessage();
+          } else {
+            this.loadCertificatesImages(certificates);
+            this.certificates = this.certificates.concat(certificates);
+            this.page++;
+          }
+          this.loading = false;
+        },
+        (error) => {
+          console.log("error: ", error);
+          this.loading = false;
+        },
+      );
   }
 
+  loadCertificatesImages(certificates: Certificate[]) {
+    certificates.forEach((certificate: Certificate) => {
+      if (certificate.img) {
+        this.imageService.getImage(certificate.img).subscribe((data: Blob) => {
+          const urlCreator = window.URL || window.webkitURL;
+          certificate.certificateImage = urlCreator.createObjectURL(data);
+        });
+      } else {
+        certificate.certificateImage = environment.default_certificate_image;
+      }
+    });
+  }
+
+  setNoMoreCertificatesMessage() {
+    if (this.certificates.length > 0) {
+      console.log('No more certificates found');
+      this.errorMessage = "No more certificates found";
+    } else {
+      console.log('No certificates found');
+      this.errorMessage = "No certificates found";
+    }
+    this.noMoreCertificates = true;
+  }
+
+
   @HostListener('window:scroll', ['$event'])
-  onScroll(event: any): void {
+  onScroll(): void {
     const currentPosition = window.pageYOffset;
     const maxPosition = document.documentElement.scrollHeight - document.documentElement.clientHeight;
 
@@ -124,22 +136,12 @@ export class CertificatesComponent implements OnInit {
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.scrollSubscription) {
-      this.scrollSubscription.unsubscribe();
-    }
-    if (this.searchTermSubscription) {
-      this.searchTermSubscription.unsubscribe();
-    }
-  }
-
   initSearch() {
     console.log("initSearch()");
-    // Reset to initial state
     this.certificates = [];
     this.page = 0;
     this.allLoaded = false;
-
+    this.noMoreCertificates = false;
     this.loadMoreResults(30);
   }
 
@@ -150,14 +152,14 @@ export class CertificatesComponent implements OnInit {
   onTileMouseDown(event: Event) {
     const tileElement = (event.target as Element).closest('.certificate-tile');
     if (tileElement) {
-      tileElement.classList.add('clicked');
+      tileElement.classList.add(this.clickedClass);
     }
   }
 
   onTileMouseUp(event: Event) {
     const tileElement = (event.target as Element).closest('.certificate-tile');
     if (tileElement) {
-      tileElement.classList.remove('clicked');
+      tileElement.classList.remove(this.clickedClass);
     }
   }
 }
