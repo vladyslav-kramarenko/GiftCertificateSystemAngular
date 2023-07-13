@@ -8,7 +8,7 @@
           </span>
         <div class="dropdown-content shadow-border" [class.show]="dropdownVisible">
           <a *ngIf="isManagerOrAdmin()" routerLink="certificates/new">Create new Certificate</a>
-          <a [routerLink]="'users/' + userId + '/orders'">My orders</a>
+          <a (click)="onOrderPageClick()" >My orders</a>
         </div>
       </div>
 
