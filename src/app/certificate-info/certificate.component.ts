@@ -3,7 +3,6 @@ import {ActivatedRoute} from "@angular/router";
 import {CertificateService} from "../shared/services/certificate.service";
 import {CartService} from "../shared/services/cart.service";
 import {Router} from '@angular/router';
-import {HttpErrorResponse} from "@angular/common/http";
 import {AuthService} from "../shared/services/auth.service";
 import {SearchService} from '../shared/services/SearchService';
 import {environment} from '../../environments/environment';
@@ -37,28 +36,13 @@ export class CertificateInfoComponent implements OnInit {
         loadedCertificate => {
           this.certificate = loadedCertificate;
           if (this.certificate.img) {
-            console.log("this.certificate.img = " + this.certificate.img)
             this.imageService.getImage(this.certificate.img).subscribe((data: Blob) => {
               const urlCreator = window.URL || window.webkitURL;
-              console.log("urlCreator = " + urlCreator);
               this.certificateImage = urlCreator.createObjectURL(data);
             });
           }
-        },
-        (error: HttpErrorResponse) => {
-          // handle error when certificate not found
-          let errorMessage;
-          if (error.error instanceof ErrorEvent) {
-            // client-side error
-            errorMessage = `Error: ${error.error.message}`;
-          } else {
-            // server-side error
-            errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-          }
-          this.router.navigateByUrl(`/error/${error.status}/${errorMessage}`);
         }
       );
-
     } else {
       // redirect to 404 error page when 'id' parameter is not available
       this.router.navigateByUrl('/error/400/Bad Request');

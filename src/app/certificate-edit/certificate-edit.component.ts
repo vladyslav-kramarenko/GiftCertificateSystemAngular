@@ -70,14 +70,12 @@ export class CertificateEditComponent implements OnInit {
         });
 
         if (this.certificate.img) {
-          console.log("this.certificate.img = "+this.certificate.img)
           this.imageService.getImage(this.certificate.img).subscribe((data: Blob) => {
             const urlCreator = window.URL || window.webkitURL;
-            console.log("urlCreator = "+urlCreator);
             this.imagePreview = urlCreator.createObjectURL(data);
           });
         } else {
-          console.log("this.certificate.img is null");
+          console.error("this.certificate.img is null");
           this.imagePreview = environment.default_certificate_image;
         }
       });

@@ -33,7 +33,6 @@ export class LoginComponent implements OnInit {
         this.loginForm.value.email,
         this.loginForm.value.password
       ).subscribe(res => {
-        console.log("Logged in successfully");
         const previousUrl = this.previousRouteService.getPreviousUrl();
         this.serverErrorMessage = '';
         if (!previousUrl) {
