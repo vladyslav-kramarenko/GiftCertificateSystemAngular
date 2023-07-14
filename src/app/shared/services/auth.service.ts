@@ -1,12 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
-import {BehaviorSubject, catchError, Observable, of, tap, throwError} from "rxjs";
+import {BehaviorSubject, catchError, Observable, tap, throwError} from "rxjs";
 import {environment} from '../../../environments/environment';
 import {User} from '../models/IUser';
 import jwt_decode from "jwt-decode";
 import {Router} from '@angular/router';
 import {PreviousRouteService} from "./previous-route.service";
-import {map} from "rxjs/operators";
 import {AuthResponse} from "../models/IAuthResponse";
 
 @Injectable({
@@ -25,6 +24,7 @@ export class AuthService {
   }
 
   loginUser(email: string, password: string) {
+    this.logout();
     const url = `${environment.API_URL}/auth/login`;
     const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
     const body = new HttpParams()
@@ -126,22 +126,6 @@ export class AuthService {
     } else {
       console.error("refreshToken is empty");
     }
-  }
-
-  validateToken(): Observable<boolean> {
-    const url = `${environment.API_URL}/auth/validate-token`;
-    return this.http.get(url)
-      .pipe(
-        map(() => {
-          this.isLoggedInSubject.next(true);
-          return true;
-        }),
-        catchError(() => {
-          console.log("Token is invalid");
-          this.isLoggedInSubject.next(false);
-          return of(false);
-        })
-      );
   }
 
   getUserId(): number {
