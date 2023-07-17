@@ -45,9 +45,7 @@ export class CertificateService {
           return certificate;
         }),
       );
-    } else {
-      console.error("Certificate.img is empty for certificate with id = " + certificate.id);
-      certificate.certificateImage = environment.default_certificate_image;
+    } else {certificate.certificateImage = environment.default_certificate_image;
       return of(certificate);
     }
   }
