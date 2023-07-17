@@ -48,7 +48,8 @@ export class AuthService {
 
     if (refreshToken === "") {
       console.error('Refresh token is empty');
-      this.saveCurrentPageAndLogout();
+      this.saveCurrentPage();
+      this.logout();
       return throwError('Refresh token is empty');
     }
 
@@ -63,7 +64,8 @@ export class AuthService {
       }),
       catchError((error: HttpErrorResponse) => {
         console.error('Token refresh failed, logging out and redirecting to login page');
-        this.saveCurrentPageAndLogout();
+        this.saveCurrentPage();
+        this.logout();
         return throwError(error);
       })
     );
@@ -169,9 +171,8 @@ export class AuthService {
     return this.http.get<User>(url);
   }
 
-  saveCurrentPageAndLogout() {
-    console.log("saveCurrentPageAndLogout()");
+  saveCurrentPage() {
     this.previousRouteService.setPreviousUrl(this.router.url);
-    this.logout();
   }
+
 }
