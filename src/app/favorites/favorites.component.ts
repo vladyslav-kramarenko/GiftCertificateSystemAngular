@@ -23,7 +23,7 @@ export class FavoritesComponent implements OnInit {
   private page: number = 0;
 
   @HostListener('window:scroll', ['$event'])
-  onScroll(event: any): void {
+  onScroll(): void {
     const currentPosition = window.pageYOffset;
     const maxPosition = document.documentElement.scrollHeight - document.documentElement.clientHeight;
 
@@ -47,13 +47,6 @@ export class FavoritesComponent implements OnInit {
       this.loadMoreCertificates();
     });
   }
-
-  ngOnDestroy(): void {
-    if (this.scrollSubscription) {
-      this.scrollSubscription.unsubscribe();
-    }
-  }
-
 
   loadMoreCertificates(): void {
     if (!this.loading && !this.allLoaded) {
@@ -87,16 +80,6 @@ export class FavoritesComponent implements OnInit {
 
   addToCart(id: number): void {
     this.cartService.addToCart(id);
-  }
-
-  onTileClick(event: Event) {
-    const tileElement = (event.target as Element).closest('.certificate-tile');
-    if (tileElement) {
-      tileElement.classList.add('clicked');
-      setTimeout(() => {
-        tileElement.classList.remove('clicked');
-      }, 200);
-    }
   }
 
   onTileMouseDown(event: Event) {
