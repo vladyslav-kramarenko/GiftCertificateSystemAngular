@@ -1,6 +1,6 @@
 <div class="favorites certificate-container">
   <div *ngFor="let certificate of favorites" class="certificate-tile flex-column" (mouseleave)="onTileMouseUp($event)">
-    <img [src]="certificate.img ? certificate.img :'assets/coupon.png' "
+    <img [src]="certificate.certificateImage"
          alt="Certificate Image"
          (mousedown)="onTileMouseDown($event)"
          (mouseup)="onTileMouseUp($event)"
