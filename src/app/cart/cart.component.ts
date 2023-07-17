@@ -79,10 +79,6 @@ export class CartComponent implements OnInit {
   }
 
   checkout(): void {
-    if (this.authService.isLoggedIn()) {
       this.router.navigate(['/checkout']);
-    } else {
-      this.router.navigate(['/login']);
-    }
   }
 }
