@@ -124,7 +124,8 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private handleRefreshError(): Observable<never> {
     console.log("handleRefreshError()");
-    this.authService.saveCurrentPageAndLogout();
+    this.authService.saveCurrentPage();
+    this.authService.logout();
     this.isRefreshing = false;
     this.refreshTokenSubject.next(null);
     this.navigateToLogin();
