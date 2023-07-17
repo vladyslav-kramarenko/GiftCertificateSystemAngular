@@ -7,7 +7,6 @@ import {SearchService} from '../shared/services/SearchService';
 import {Certificate} from "../shared/models/ICertificate";
 import {Tag} from "../shared/models/ITag";
 import {TagService} from "../shared/services/tag.service";
-import {environment} from "../../environments/environment";
 import {ImageService} from "../shared/services/image.service";
 
 @Component({
@@ -74,7 +73,7 @@ export class CertificatesComponent implements OnInit {
       return;
     }
     this.errorMessage = '';
-    const sortParams = this.sortBy.split(',').map(s => s.trim());
+    const sortParams=this.getSortParams();
     this.loading = true;
     this.certificateService.searchGiftCertificates(
       this.searchTerm,
@@ -84,34 +83,29 @@ export class CertificatesComponent implements OnInit {
       this.minPrice || 0,
       this.maxPrice || 0
     )
-      .subscribe((certificates: Certificate[]) => {
-          if (certificates === null || certificates === undefined || certificates.length === 0) {
-            this.setNoMoreCertificatesMessage();
-          } else {
-            this.loadCertificatesImages(certificates);
-            this.certificates = this.certificates.concat(certificates);
-            this.page++;
-          }
-          this.loading = false;
-        },
-        (error) => {
-          console.log("error: ", error);
-          this.loading = false;
-        },
+      .subscribe(
+        (certificates: Certificate[]) => this.handleCertificatesResponse(certificates),
+        (error) => this.handleSearchError(error)
       );
   }
 
-  loadCertificatesImages(certificates: Certificate[]) {
-    certificates.forEach((certificate: Certificate) => {
-      if (certificate.img) {
-        this.imageService.getImage(certificate.img).subscribe((data: Blob) => {
-          const urlCreator = window.URL || window.webkitURL;
-          certificate.certificateImage = urlCreator.createObjectURL(data);
-        });
-      } else {
-        certificate.certificateImage = environment.default_certificate_image;
-      }
-    });
+  private getSortParams(): String[] {
+    return this.sortBy.split(',').map(s => s.trim());
+  }
+
+  private handleCertificatesResponse(certificates: Certificate[]): void {
+    if (certificates === null || certificates === undefined || certificates.length === 0) {
+      this.setNoMoreCertificatesMessage();
+    } else {
+      this.certificates = this.certificates.concat(certificates);
+      this.page++;
+    }
+    this.loading = false;
+  }
+
+  private handleSearchError(error: any): void {
+    console.log("error: ", error);
+    this.loading = false;
   }
 
   setNoMoreCertificatesMessage() {
