@@ -35,16 +35,22 @@ export class AuthInterceptor implements HttpInterceptor {
       } else if (error instanceof HttpErrorResponse && error.status === 401) {
         return this.handle401Error(request, next);
       } else {
-        console.log("intercept => route to error page");
-        this.router.navigate([`/error/${error.status}`, {errorMessage: error.message}]);
+        if (!this.isFavoritePage()) {
+          console.log("intercept => route to error page");
+          this.router.navigate([`/error/${error.status}`, {errorMessage: error.message}]);
+        }
         return throwError(error);
       }
     }));
   }
 
+  private isFavoritePage(): boolean {
+    const url = this.router.url;
+    return url.includes('/favorites');
+  }
+
   private isAuthPage(): boolean {
     const url = this.router.url;
-    console.log()
     return url.includes('/login') || url.includes('/register');
   }
 
