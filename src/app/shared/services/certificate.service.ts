@@ -44,11 +44,17 @@ export class CertificateService {
           certificate.certificateImage = urlCreator.createObjectURL(data);
           return certificate;
         }),
+        catchError(() => {
+          console.error("Error loading image for certificate with id = " + certificate.id);
+          certificate.certificateImage = environment.default_certificate_image;
+          return of(certificate);
+        })
       );
-    } else {certificate.certificateImage = environment.default_certificate_image;
-      return of(certificate);
     }
+    certificate.certificateImage = environment.default_certificate_image;
+    return of(certificate);
   }
+
 
   updateCertificate(id: number, certificate: Certificate): Observable<Certificate> {
     return this.http.put<Certificate>(`${this.certificatesEndpoint}/${id}`, certificate);
