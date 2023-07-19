@@ -1,12 +1,12 @@
 import {AuthService} from "../services/auth.service";
-import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from "@angular/router";
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from "@angular/router";
 import {Observable} from "rxjs";
 import {Injectable} from '@angular/core';
 import {map} from "rxjs/operators";
 
 @Injectable()
 export class RoleGuard implements CanActivate {
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> | Promise<boolean> {
@@ -16,18 +16,21 @@ export class RoleGuard implements CanActivate {
         map(isLoggedIn => {
           if (!isLoggedIn) {
             console.log("user is not Logged in");
-            return false;
+            this.authService.saveCurrentPage();
+            return this.router.createUrlTree(['/login']);
           } else {
             const expectedRoles = route.data['roles'];
             if (!expectedRoles) {
               console.log("expectedRoles is null");
-              return false;
+              this.authService.saveCurrentPage();
+              return this.router.createUrlTree(['/login']);
             }
 
             const userRoles = this.authService.getUserRoles();
             if (!userRoles) {
               console.log("userRoles is null");
-              return false;
+              this.authService.saveCurrentPage();
+              return this.router.createUrlTree(['/login']);
             }
 
             const hasRole = expectedRoles.some((role: string) => userRoles.includes(role));
