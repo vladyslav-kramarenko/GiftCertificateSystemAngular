@@ -16,15 +16,20 @@ import {PreviousRouteService} from './previous-route.service';
 export class AuthInterceptor implements HttpInterceptor {
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  private userId: number | null = null;
 
   constructor(
     public authService: AuthService,
     private router: Router,
     private previousRouteService: PreviousRouteService
   ) {
+    this.authService.userId$.subscribe(userId => {
+      this.userId = userId;
+    });
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+
     if (this.authService.hasAccessToken()) {
       request = this.addToken(request, this.authService.getAuthToken());
     }
@@ -56,23 +61,18 @@ export class AuthInterceptor implements HttpInterceptor {
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
     console.log("handle401Error()");
     if (!this.isRefreshing) {
-      console.log("refreshing = " + this.isRefreshing);
       this.removeAccessToken();
       return this.initiateTokenRefresh(request, next);
     } else {
-      console.log("refreshing = " + this.isRefreshing);
       return this.waitForTokenRefresh(request, next);
     }
   }
 
   private removeAccessToken() {
     try {
-      console.log("Removing access token and retrying...");
       localStorage.removeItem('authToken');
-      console.log("localStorage.removeItem('authToken')");
-      console.log("authToken = " + this.authService.getAuthToken());
     } catch (e) {
-      console.log('An error occurred: ', e);
+      console.log('An error occurred while removing access token: ', e);
     }
   }
 
@@ -88,7 +88,6 @@ export class AuthInterceptor implements HttpInterceptor {
       return accessToken.pipe(
         switchMap((token: any) => {
           this.isRefreshing = false;
-          console.log("refreshing = " + this.isRefreshing);
           this.refreshTokenSubject.next(token.accessToken);
           return next.handle(this.addToken(request, token.accessToken));
         }),
@@ -103,7 +102,6 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private waitForTokenRefresh(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log("waitForTokenRefresh()");
     return this.refreshTokenSubject.pipe(
       filter(token => token != null),
       take(1),

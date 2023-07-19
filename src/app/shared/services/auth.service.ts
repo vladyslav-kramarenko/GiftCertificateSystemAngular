@@ -16,6 +16,9 @@ export class AuthService {
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.hasAccessToken());
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
+  private userIdSubject = new BehaviorSubject<number | null>(null);
+  userId$ = this.userIdSubject.asObservable();
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -35,12 +38,18 @@ export class AuthService {
         localStorage.setItem('authToken', response.accessToken);
         localStorage.setItem('refreshToken', response.refreshToken);
         this.isLoggedInSubject.next(true);
+
+        const userId = this.getUserIdFromToken(response.accessToken);
+        if (userId !== undefined) {
+          this.userIdSubject.next(userId);
+          localStorage.setItem('userId', String(userId));
+        }
       })
     );
   }
 
-
   refreshAccessToken() {
+    console.log("refreshAccessToken()");
     localStorage.removeItem('authToken');
     const url = `${environment.API_URL}/auth/refresh-token`;
     const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
@@ -61,6 +70,13 @@ export class AuthService {
         localStorage.setItem('refreshToken', response.refreshToken);
 
         this.isLoggedInSubject.next(true);
+
+        const userId = this.getUserIdFromToken(response.accessToken);
+        if (userId !== undefined) {
+          this.userIdSubject.next(userId);
+        } else {
+          console.log("userId is undefined");
+        }
       }),
       catchError((error: HttpErrorResponse) => {
         console.error('Token refresh failed, logging out and redirecting to login page');
@@ -113,6 +129,7 @@ export class AuthService {
   }
 
   logout(): void {
+    console.log("logout()");
     localStorage.removeItem('authToken');
     this.deleteRefreshTokenFromServer();
     this.isLoggedInSubject.next(false);
@@ -130,24 +147,37 @@ export class AuthService {
     }
   }
 
-  getUserId(): number {
-    const token = this.getAuthToken();
-    if (!token || token === "") {
-      console.error("authToken is null")
-      this.refreshAccessToken();
-    }
-
-    try {
-      const decodedToken: any = jwt_decode(token);
-      const userAuthority = decodedToken.roles?.find((a: string) => a.startsWith('USER_ID_'));
-      const userId = Number(userAuthority.split('_').pop());
-      if (userId != null) return userId
-      return 0;
-    } catch (error) {
-      console.error('Error decoding token', error);
-      return 0;
-    }
+  private getUserIdFromToken(accessToken: string): number | undefined {
+    console.log("getUserIdFromToken()");
+    const decodedToken: any = jwt_decode(accessToken);
+    console.log("decodedToken.roles: " + decodedToken.roles);
+    const userAuthority = decodedToken.roles?.find((a: string) => a.startsWith('USER_ID_'));
+    return userAuthority ? Number(userAuthority.split('_').pop()) : undefined;
   }
+
+
+  getUserId(): Observable<number | null> {
+    return this.userId$;
+  }
+
+  // getUserId(): number {
+  //   const token = this.getAuthToken();
+  //   if (!token || token === "") {
+  //     console.error("authToken is null")
+  //     this.refreshAccessToken();
+  //   }
+  //
+  //   try {
+  //     const decodedToken: any = jwt_decode(token);
+  //     const userAuthority = decodedToken.roles?.find((a: string) => a.startsWith('USER_ID_'));
+  //     const userId = Number(userAuthority.split('_').pop());
+  //     if (userId != null) return userId
+  //     return 0;
+  //   } catch (error) {
+  //     console.error('Error decoding token', error);
+  //     return 0;
+  //   }
+  // }
 
   getUserRoles(): string[] {
     const token = localStorage.getItem('authToken');

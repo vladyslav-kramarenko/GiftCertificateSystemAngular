@@ -4,7 +4,7 @@ import {CartService} from '../shared/services/cart.service';
 import {OrderService} from '../shared/services/order.service';
 import {CertificateService} from '../shared/services/certificate.service';
 import {Router} from '@angular/router';
-import {forkJoin} from "rxjs";
+import {forkJoin, Subscription} from "rxjs";
 import {map} from "rxjs/operators";
 import {Certificate} from "../shared/models/ICertificate";
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -17,6 +17,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 export class CheckoutComponent implements OnInit {
   user: any;
   cart: { certificate: Certificate, quantity: number }[] = [];
+
+  private userIdSubscription!: Subscription;
 
   firstName: string = '';
   lastName: string = '';
@@ -34,19 +36,25 @@ export class CheckoutComponent implements OnInit {
 
 
   ngOnInit() {
-    const userId = this.authService.getUserId();
+    this.userIdSubscription = this.authService.userId$.subscribe(userId => {
+      if (userId) {
+        this.getUserData(userId);
+      } else {
+        console.log("userId is null");
+      }
+    });
 
-    if (userId) {
-      console.log("userId = " + userId);
-      this.getUserData(userId);
-    } else {
-      console.log("userId is null");
-    }
     const cartData = JSON.parse(localStorage.getItem('cart') || '[]');
 
     forkJoin<{ certificate: Certificate, quantity: number }[]>(this.getCartItemsData(cartData)).subscribe((cartItems) => {
       this.cart = cartItems;
     });
+  }
+
+  ngOnDestroy() {
+    if (this.userIdSubscription) {
+      this.userIdSubscription.unsubscribe();
+    }
   }
 
   getCartItemsData(cartData: { id: number, quantity: number }[]) {
