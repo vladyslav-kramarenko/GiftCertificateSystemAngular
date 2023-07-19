@@ -25,10 +25,14 @@ export class CartComponent implements OnInit {
     cartIds.forEach((item: any) => {
       this.certificateService.getCertificate(item.id).subscribe(
         certificate => {
-          this.cart.push({
-            certificate: certificate,
-            quantity: item.quantity
-          });
+          if (certificate) {
+            this.cart.push({
+              certificate: certificate,
+              quantity: item.quantity
+            });
+          } else {
+            this.removeFromCart(item);
+          }
         },
         error => {
           console.error('Error loading certificate', error);
@@ -63,7 +67,13 @@ export class CartComponent implements OnInit {
           certificate: Certificate;
           quantity: number
         }
-      ) => total + item.certificate.price * item.quantity, 0
+      ) => {
+        if (item.certificate && item.certificate.price && item.quantity) {
+          return total + item.certificate.price * item.quantity;
+        } else {
+          return total;
+        }
+      }, 0
     );
     return Math.round(totalPrice * 100) / 100;
   }
@@ -79,6 +89,6 @@ export class CartComponent implements OnInit {
   }
 
   checkout(): void {
-      this.router.navigate(['/checkout']);
+    this.router.navigate(['/checkout']);
   }
 }
