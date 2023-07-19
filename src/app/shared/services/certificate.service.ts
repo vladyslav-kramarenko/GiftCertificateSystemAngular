@@ -30,7 +30,7 @@ export class CertificateService {
         catchError(
           () => {
             console.error("error while trying to find certificate with id = " + id);
-            return of(null);
+            return of();
           }
         )
       );
