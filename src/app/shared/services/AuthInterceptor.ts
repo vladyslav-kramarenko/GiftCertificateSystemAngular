@@ -122,7 +122,6 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private navigateToLogin() {
-    console.log("navigateToLogin()");
     this.previousRouteService.setPreviousUrl(this.router.url);
     this.router.navigate(['/login']);
   }
