@@ -24,12 +24,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loadUserId();
-
     this.subscriptions.push(
       this.searchService.searchTerm$.subscribe(term => {
         this.searchTerm = term;
       }),
+
+      this.authService.getUserId().subscribe(id => {
+        this.userId = id;
+      }),
+
       this.router.events.subscribe(event => {
         if (event instanceof NavigationStart) {
           this.dropdownVisible = false;
@@ -56,11 +59,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onLogoutClick() {
     this.authService.logout();
-    this.router.navigate(['/login']);
-  }
-
-  loadUserId(): void {
-    this.userId = this.authService.getUserId();
   }
 
   isManagerOrAdmin(): boolean {
@@ -77,10 +75,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onOrderPageClick() {
-    if (this.userId != null && this.userId > 0) {
-      this.router.navigate(['/users/' + this.userId + '/orders']);
-    }else{
-      this.router.navigate(['/login']);
-    }
+    this.router.navigate(['/users/' + this.userId + '/orders']);
   }
 }
